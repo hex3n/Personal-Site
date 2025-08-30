@@ -104,10 +104,14 @@ export async function generateWriteupsIndex() {
 			)
 			.replace(
 				`
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
 						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
 
 `,
 				`
+						<a href="index.html" class="nav-link">HOME</a>
+						<a href="about.html" class="nav-link">ABOUT</a>
 						<a href="writeups.html" class="nav-link">WRITEUPS</a>
 `,
 			);
