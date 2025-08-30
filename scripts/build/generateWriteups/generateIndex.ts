@@ -105,6 +105,10 @@ export async function generateWriteupsIndex() {
 			.replace(
 				/<a href="\.\.\/(index\.html|about\.html|writeups\.html)" class="nav-link">(HOME|ABOUT|WRITEUPS)<\/a>/g,
 				(_match, p1, p2) => `<a href="${p1}" class="nav-link">${p2}</a>`,
+			)
+			.replace(
+				`<script type="module" src="../assets/js/menu.js" defer></script>`,
+				`<script type="module" src="assets/js/menu.js" defer></script>`,
 			);
 		// Write the final HTML to file
 		writeFileSync(outputPath, finalHtml);
