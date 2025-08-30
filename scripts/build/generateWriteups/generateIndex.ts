@@ -101,6 +101,15 @@ export async function generateWriteupsIndex() {
 		<link rel="stylesheet" href="../assets/css/writeups.css" />
 `,
 				`		<link rel="stylesheet" href="assets/css/writeups.css" />`,
+			)
+			.replace(
+				`
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+
+`,
+				`
+						<a href="writeups.html" class="nav-link">WRITEUPS</a>
+`,
 			);
 		// Write the final HTML to file
 		writeFileSync(outputPath, finalHtml);
