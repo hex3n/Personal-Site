@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <div class="writeup-card" data-id="${writeup.id}">
         <h2 class="writeup-title cyber-text">${writeup.title}</h2>
         <p class="writeup-description">${writeup.description}</p>
-        <a href="/writeups/${writeup.id}.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+        <a href="writeups/${writeup.id}.html" class="writeup-link cyber-link">READ_WRITEUP</a>
       </div>
     `,
 			)
