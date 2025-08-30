@@ -95,8 +95,13 @@ export async function generateWriteupsIndex() {
 			.replace(
 				'</body>',
 				`		<script type="module" src="assets/js/writeups.js" defer></script></body>`,
+			)
+			.replace(
+				`
+		<link rel="stylesheet" href="../assets/css/writeups.css" />
+`,
+				`		<link rel="stylesheet" href="assets/css/writeups.css" />`,
 			);
-
 		// Write the final HTML to file
 		writeFileSync(outputPath, finalHtml);
 		console.log(`✅ Writeups index generated at: ${outputPath}`);
