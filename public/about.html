@@ -62,17 +62,74 @@
 							>// SECURITY_SPECIALIST</span
 						>
 					</div>
+
+					<!-- Desktop Menu -->
 					<div class="hidden md:flex space-x-6">
 						<a href="index.html" class="nav-link">HOME</a>
-						<a href="about.html" class="nav-link">ABOUT</a>
+						<a href="#" class="nav-link">ABOUT</a>
 						<a href="writeups.html" class="nav-link">WRITEUPS</a>
 					</div>
-					<div class="md:hidden">
-						<button type="button" class="mobile-menu-btn text-neongreen">
-							<span class="block w-6 h-0.5 bg-neongreen mb-1"></span>
-							<span class="block w-6 h-0.5 bg-neongreen mb-1"></span>
-							<span class="block w-6 h-0.5 bg-neongreen"></span>
+
+					<!-- Mobile Menu Button -->
+					<div class="md:hidden mt-4">
+						<button
+							id="mobile-menu-button"
+							type="button"
+							class="text-neongreen focus:outline-none"
+						>
+							<svg
+								class="h-6 w-6 transition-transform duration-300"
+								id="menu-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg>
+							<svg
+								class="h-6 w-6 transition-transform duration-300 hidden"
+								id="close-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
 						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu (hidden by default) -->
+				<div
+					id="mobile-menu"
+					class="md:hidden mt-2 border-t border-neongreen border-opacity-30 transform origin-top transition-all duration-300 scale-y-0 opacity-0 max-h-0"
+				>
+					<div class="flex flex-col space-y-4">
+						<a
+							href="#hero"
+							class="nav-link-mobile block py-2 px-4 hover:bg-neongreen hover:bg-opacity-10 rounded transition-colors"
+							>HOME</a
+						>
+						<a
+							href="about.html"
+							class="nav-link-mobile block py-2 px-4 hover:bg-neongreen hover:bg-opacity-10 rounded transition-colors"
+							>ABOUT</a
+						>
+						<a
+							href="writeups.html"
+							class="nav-link-mobile block py-2 px-4 hover:bg-neongreen hover:bg-opacity-10 rounded transition-colors"
+							>WRITEUPS</a
+						>
 					</div>
 				</div>
 			</div>

@@ -61,101 +61,6 @@ export async function generateWriteupsIndex() {
         </div>`;
 		}
 
-		// JavaScript for search and pagination
-		const script = `
-      document.addEventListener('DOMContentLoaded', function() {
-        const writeups = ${JSON.stringify(writeups)};
-        const writeupsList = document.getElementById('writeupsList');
-        const searchInput = document.getElementById('searchInput');
-        const resultsCount = document.getElementById('resultsCount');
-        const prevPageBtn = document.getElementById('prevPage');
-        const nextPageBtn = document.getElementById('nextPage');
-        const currentPageEl = document.getElementById('currentPage');
-        
-        let currentPage = 1;
-        const itemsPerPage = 6;
-        let filteredWriteups = [...writeups];
-        
-        // Render writeups based on current page and filter
-        function renderWriteups() {
-          const startIndex = (currentPage - 1) * itemsPerPage;
-          const endIndex = startIndex + itemsPerPage;
-          const writeupsToRender = filteredWriteups.slice(startIndex, endIndex);
-          
-          writeupsList.innerHTML = writeupsToRender.map(writeup => \`
-            <div class="writeup-card" data-id="\${writeup.id}">
-              <h2 class="writeup-title cyber-text">\${writeup.title}</h2>
-              <p class="writeup-description">\${writeup.description}</p>
-              <a href="/writeups/\${writeup.id}.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-            </div>
-          \`).join('');
-          
-          // Update pagination controls
-          const pageCount = Math.ceil(filteredWriteups.length / itemsPerPage);
-          if (currentPageEl) {
-            currentPageEl.textContent = currentPage;
-          }
-          
-          if (prevPageBtn) {
-            prevPageBtn.disabled = currentPage === 1;
-          }
-          
-          if (nextPageBtn) {
-            nextPageBtn.disabled = currentPage === pageCount || pageCount === 0;
-          }
-          
-          // Update results count
-          if (resultsCount) {
-            resultsCount.textContent = \`\${writeupsToRender.length} of \${filteredWriteups.length} WRITEUPS DISPLAYED\`;
-          }
-        }
-        
-        // Filter writeups based on search input
-        function filterWriteups() {
-          const searchTerm = searchInput.value.toLowerCase();
-          
-          if (searchTerm.trim() === '') {
-            filteredWriteups = [...writeups];
-          } else {
-            filteredWriteups = writeups.filter(writeup => 
-              writeup.title.toLowerCase().includes(searchTerm) || 
-              writeup.description.toLowerCase().includes(searchTerm)
-            );
-          }
-          
-          currentPage = 1; // Reset to first page when filtering
-          renderWriteups();
-        }
-        
-        // Event listeners
-        if (searchInput) {
-          searchInput.addEventListener('input', filterWriteups);
-        }
-        
-        if (prevPageBtn) {
-          prevPageBtn.addEventListener('click', () => {
-            if (currentPage > 1) {
-              currentPage--;
-              renderWriteups();
-            }
-          });
-        }
-        
-        if (nextPageBtn) {
-          nextPageBtn.addEventListener('click', () => {
-            const pageCount = Math.ceil(filteredWriteups.length / itemsPerPage);
-            if (currentPage < pageCount) {
-              currentPage++;
-              renderWriteups();
-            }
-          });
-        }
-        
-        // Initial render
-        renderWriteups();
-      });
-    `;
-
 		// Create the main content for the writeups index
 		const mainContent = `
       <div class="writeups-container">
@@ -187,7 +92,10 @@ export async function generateWriteupsIndex() {
 		// Replace the content placeholder with our writeups index
 		const finalHtml = templateWithStyles
 			.replace('${content}', mainContent)
-			.replace('</body>', `<script>${script}</script></body>`);
+			.replace(
+				'</body>',
+				`		<script type="module" src="../assets/js/writeups.js" defer></script></body>`,
+			);
 
 		// Write the final HTML to file
 		writeFileSync(outputPath, finalHtml);

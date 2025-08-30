@@ -260,5 +260,29 @@ export const extractMetaData = async () => {
 	// Write the metadata to JSON file
 	fs.writeFileSync(outputFile, JSON.stringify(metadataArray, null, 2));
 	console.log(`\n✅ Metadata saved to ${outputFile}`);
+
+	// Also update the TypeScript file for writeups
+	const tsOutputPath = path.join(process.cwd(), 'src', 'ts', 'writeups.ts');
+	if (fs.existsSync(tsOutputPath)) {
+		let tsContent = fs.readFileSync(tsOutputPath, 'utf8');
+
+		// Replace the array between the markers
+		const startMarker = '// AUTO-GENERATED-WRITEUPS-START';
+		const endMarker = '// AUTO-GENERATED-WRITEUPS-END';
+
+		const newArrayContent = `const writeups: Writeup[] = ${JSON.stringify(metadataArray, null, 2)};`;
+
+		// Use regex to replace content between markers
+		const regex = new RegExp(`${startMarker}[\\s\\S]*?${endMarker}`, 'g');
+		const replacement = `${startMarker}\n${newArrayContent}\n${endMarker}`;
+
+		tsContent = tsContent.replace(regex, replacement);
+		fs.writeFileSync(tsOutputPath, tsContent);
+
+		console.log(`✅ TypeScript writeups array updated in ${tsOutputPath}`);
+	} else {
+		console.warn(`⚠️  TypeScript writeups file not found at: ${tsOutputPath}`);
+	}
+
 	console.log(`Total files processed: ${metadataArray.length}`);
 };
