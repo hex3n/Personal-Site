@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono:wght@400;700&family=Oxanium:wght@300;400;600;700;800&display=swap');
 
 :root {
 	--neongreen: #e1ff00;
@@ -16,7 +15,6 @@
 }
 
 /* Base Styles */
-
 .cyberpunk-body {
 	font-family: 'Share Tech Mono', monospace;
 	color: var(--neongreen);
@@ -26,7 +24,6 @@
 }
 
 /* Enhanced Neon Glow Effects */
-
 .cyber-text-glow {
 	text-shadow:
 		0 0 5px currentcolor,
@@ -34,13 +31,13 @@
 		0 0 30px currentcolor;
 }
 
-/* Navigation */
-
+/* Navigation - Mobile Improvements */
 .cyber-nav {
 	backdrop-filter: blur(10px);
 	border-bottom: 2px solid var(--neongreen);
 	box-shadow: 0 0 20px rgb(225 255 0 / 20%);
 	background: rgb(0 0 0 / 90%);
+	padding: 0.5rem 1rem;
 }
 
 .cyber-logo {
@@ -48,7 +45,6 @@
 }
 
 .cyber-logo::after {
-	content: '';
 	position: absolute;
 	bottom: -5px;
 	left: 0;
@@ -76,7 +72,7 @@
 
 .nav-link {
 	display: inline-block;
-	padding: 0.5rem 1rem;
+	padding: 0.75rem 1rem; /* Increased padding for better touch targets */
 	font-size: 1.1rem;
 	text-transform: uppercase;
 	letter-spacing: 1px;
@@ -108,11 +104,11 @@
 }
 
 /* Footer */
-
 .cyber-footer {
 	position: relative;
 	border-top: 2px solid var(--neongreen);
 	background: var(--corpo-gray);
+	padding: 1.5rem;
 }
 
 .cyber-footer::before {
@@ -131,11 +127,11 @@
 }
 
 /* Contact Section (for cyber-link) */
-
 .cyber-link {
 	position: relative;
 	text-decoration: none;
 	transition: all 0.3s ease;
+	padding: 0.5rem 0; /* Added padding for better touch targets */
 }
 
 .cyber-link::after {
@@ -155,7 +151,6 @@
 }
 
 /* Custom color classes for icons */
-
 .text-neonblue {
 	color: var(--neonblue);
 }
@@ -168,9 +163,407 @@
 	color: var(--neongreen);
 }
 
+/* ========== Enhanced Markdown Styles ========== */
+.markdown-body {
+	/* Cyberpunk-themed color palette */
+	--md-bg: rgb(10 10 10 / 85%);
+	--md-fg: #e1e1e1;
+	--md-muted: #a0a0a0;
+	--md-link: var(--neongreen);
+	--md-link-hover: var(--neonblue);
+	--md-code-bg: #0d1117;
+	--md-pre-bg: #0b0f14;
+	--md-border: rgb(225 255 0 / 15%);
+	--md-accent: rgb(255 0 128 / 10%);
+	--md-heading-glow: 0 0 8px rgb(225 255 0 / 30%);
+
+	color: var(--md-fg);
+	background: var(--md-bg);
+	font-family: 'Share Tech Mono', monospace;
+	line-height: 1.7;
+	max-width: 980px;
+	margin: 2rem auto;
+	padding: 2.5rem;
+	border-radius: 4px;
+	border: 1px solid var(--md-border);
+	box-shadow: 0 0 25px rgb(0 212 255 / 10%);
+	position: relative;
+	overflow: hidden;
+}
+
+/* Cyberpunk grid background effect */
+.markdown-body::before {
+	content: ''; /* Added missing content property */
+	position: absolute;
+	inset: 0;
+	background-image:
+		linear-gradient(rgb(0 212 255 / 5%) 1px, transparent 1px),
+		linear-gradient(90deg, rgb(0 212 255 / 5%) 1px, transparent 1px);
+	background-size: 20px 20px;
+	pointer-events: none;
+	z-index: -1;
+}
+
+/* Headings with cyberpunk style */
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+	color: var(--neongreen);
+	text-shadow: var(--md-heading-glow);
+	border-bottom: 1px solid var(--md-border);
+	padding-bottom: 0.5rem;
+	margin: 2rem 0 1rem;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+	word-wrap: break-word; /* Prevent long words from overflowing */
+}
+
+.markdown-body h1 {
+	font-size: 2.2rem;
+	border-bottom: 2px solid var(--neonpink);
+}
+
+.markdown-body h2 {
+	font-size: 1.8rem;
+	border-bottom: 2px solid var(--neonblue);
+}
+
+.markdown-body h3 {
+	font-size: 1.5rem;
+	color: var(--neonblue);
+}
+
+.markdown-body h4 {
+	font-size: 1.3rem;
+	color: var(--neonpurple);
+}
+
+/* Paragraphs & lists */
+.markdown-body p {
+	margin: 0 0 1.5rem;
+	color: var(--md-fg);
+	line-height: 1.6;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+	margin: 0 0 1.5rem 1.5rem;
+	padding-left: 1rem; /* Added padding for better mobile spacing */
+}
+
+.markdown-body li {
+	margin: 0.5rem 0;
+	position: relative;
+}
+
+.markdown-body ul li::before {
+	content: '■';
+	color: var(--neonpink);
+	font-size: 0.8rem;
+	position: absolute;
+	left: -1.2rem;
+	top: 0.3rem;
+}
+
+/* Links */
+.markdown-body a {
+	color: var(--md-link);
+	text-decoration: none;
+	border-bottom: 1px dotted rgb(225 255 0 / 30%);
+	transition: all 0.3s ease;
+	word-break: normal;
+	overflow-wrap: anywhere;
+}
+
+.markdown-body a:hover {
+	color: var(--md-link-hover);
+	text-shadow: 0 0 8px var(--neonblue);
+	border-bottom: 1px solid var(--neonblue);
+}
+
+/* Blockquotes */
+.markdown-body blockquote {
+	margin: 0 0 1.5rem;
+	padding: 1.2rem 1.5rem;
+	border-left: 4px solid var(--neonpink);
+	background: var(--md-accent);
+	color: var(--md-fg);
+	position: relative;
+	overflow: hidden;
+	border-radius: 0 4px 4px 0;
+}
+
+.markdown-body blockquote::after {
+	position: absolute;
+	top: -20px;
+	right: 10px;
+	font-size: 5rem;
+	color: rgb(255 0 128 / 10%);
+	font-family: sans-serif;
+}
+
+/* Code (inline) */
+.markdown-body code {
+	font-family: 'Fira Code', 'Cascadia Code', 'Source Code Pro', monospace;
+	background: var(--md-code-bg);
+	padding: 0.2rem 0.4rem;
+	border-radius: 4px;
+	font-size: 0.9em;
+	color: var(--neonblue);
+	border: 1px solid rgb(0 212 255 / 10%);
+	word-break: normal;
+	overflow-wrap: anywhere;
+}
+
+/* Pre / code blocks */
+.markdown-body pre {
+	margin: 0 0 1.5rem;
+	padding: 1.5rem;
+	overflow: auto;
+	border-radius: 4px;
+	background: var(--md-pre-bg);
+	border: 1px solid rgb(0 212 255 / 20%);
+	color: var(--neonblue);
+	font-size: 0.9rem;
+	position: relative;
+	box-shadow: 0 0 15px rgb(0 212 255 / 10%);
+	-webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.markdown-body pre::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: linear-gradient(90deg, var(--neonpink), var(--neonblue));
+	opacity: 0.5;
+}
+
+.markdown-body pre code {
+	background: transparent;
+	padding: 0;
+	border-radius: 0;
+	color: inherit;
+	border: none;
+	white-space: pre-wrap; /* Allow code wrapping */
+	word-break: break-all; /* Break long lines in code */
+}
+
+/* Tables */
+.markdown-body table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 0 0 1.5rem;
+	font-size: 0.95rem;
+	box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+	display: block; /* Make tables scrollable on mobile */
+	overflow-x: auto;
+}
+
+.markdown-body th,
+.markdown-body td {
+	padding: 0.75rem 1rem;
+	border: 1px solid rgb(225 255 0 / 20%);
+	text-align: left;
+}
+
+.markdown-body th {
+	background: rgb(0 0 0 / 30%);
+	font-weight: 600;
+	color: var(--neongreen);
+}
+
+.markdown-body tr:nth-child(even) {
+	background: rgb(255 255 255 / 3%);
+}
+
+/* Horizontal rule */
+.markdown-body hr {
+	border: none;
+	height: 1px;
+	background: linear-gradient(
+		90deg,
+		transparent,
+		var(--neongreen),
+		transparent
+	);
+	margin: 2rem 0;
+}
+
+/* Images */
+.markdown-body img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	margin: 1.5rem auto;
+	border: 1px solid var(--md-border);
+	box-shadow: 0 0 15px rgb(0 0 0 / 30%);
+}
+
+/* Keyboard keys */
+.markdown-body kbd {
+	font-family: 'Share Tech Mono', monospace;
+	background: var(--md-code-bg);
+	border: 1px solid var(--md-border);
+	border-radius: 4px;
+	padding: 0.2rem 0.4rem;
+	font-size: 0.85em;
+	box-shadow: 0 2px 0 rgb(0 0 0 / 20%);
+}
+
+/* Details/summary */
+.markdown-body details {
+	background: rgb(0 0 0 / 20%);
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	margin-bottom: 1rem;
+	border: 1px solid var(--md-border);
+}
+
+.markdown-body details summary {
+	cursor: pointer;
+	color: var(--neonblue);
+	font-weight: bold;
+	padding: 0.5rem 0;
+}
+
+.markdown-body details[open] summary {
+	margin-bottom: 0.5rem;
+	border-bottom: 1px solid var(--md-border);
+	padding-bottom: 0.5rem;
+}
+
+/* ========== Enhanced Mobile Responsiveness ========== */
 @media (width <= 768px) {
 	.cyberpunk-body {
 		overflow-x: hidden;
 		width: 100%;
+	}
+
+	/* Markdown body adjustments */
+	.markdown-body {
+		padding: 1.5rem;
+		margin: 1rem;
+		border-radius: 0;
+		border-left: none;
+		border-right: none;
+	}
+
+	/* Heading adjustments */
+	.markdown-body h1 {
+		font-size: 1.8rem;
+		margin: 1.5rem 0 1rem;
+	}
+
+	.markdown-body h2 {
+		font-size: 1.5rem;
+		margin: 1.5rem 0 1rem;
+	}
+
+	.markdown-body h3 {
+		font-size: 1.3rem;
+		margin: 1.25rem 0 0.75rem;
+	}
+
+	.markdown-body h4 {
+		font-size: 1.1rem;
+		margin: 1.25rem 0 0.75rem;
+	}
+
+	/* Improved spacing for mobile */
+	.markdown-body p,
+	.markdown-body ul,
+	.markdown-body ol,
+	.markdown-body blockquote,
+	.markdown-body pre,
+	.markdown-body table {
+		margin-bottom: 1.25rem;
+	}
+
+	/* Code blocks */
+	.markdown-body pre {
+		padding: 1rem;
+		font-size: 0.8rem;
+		border-radius: 3px;
+	}
+
+	/* Lists */
+	.markdown-body ul,
+	.markdown-body ol {
+		margin-left: 1rem;
+		padding-left: 0.5rem;
+	}
+
+	.markdown-body ul li::before {
+		left: -1rem;
+	}
+
+	/* Blockquotes */
+	.markdown-body blockquote {
+		padding: 1rem;
+		margin-left: 0;
+		margin-right: 0;
+	}
+
+	/* Tables */
+	.markdown-body table {
+		font-size: 0.85rem;
+		display: block;
+	}
+
+	.markdown-body th,
+	.markdown-body td {
+		padding: 0.5rem 0.75rem;
+	}
+
+	/* Images */
+	.markdown-body img {
+		margin: 1rem auto;
+	}
+
+	/* Footer */
+	.cyber-footer {
+		padding: 1.5rem 1rem;
+	}
+}
+
+/* Very small devices (phones, 480px and down) */
+@media (width <= 480px) {
+	.markdown-body {
+		padding: 1.25rem 1rem;
+		margin: 0.5rem;
+	}
+
+	.markdown-body h1 {
+		font-size: 1.6rem;
+	}
+
+	.markdown-body h2 {
+		font-size: 1.35rem;
+	}
+
+	.markdown-body h3 {
+		font-size: 1.15rem;
+	}
+
+	.markdown-body h4 {
+		font-size: 1rem;
+	}
+
+	.markdown-body pre {
+		padding: 0.75rem;
+		font-size: 0.75rem;
+	}
+
+	.markdown-body blockquote {
+		padding: 0.75rem;
+	}
+
+	/* Increase touch targets for links */
+	.markdown-body a {
+		padding: 0.25rem 0;
 	}
 }

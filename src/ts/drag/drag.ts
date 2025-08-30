@@ -32,11 +32,6 @@ export const makeDraggable = (e: HTMLElement) => {
 		startDrag(event, element);
 	};
 
-	element.value.ontouchstart = (event: TouchEvent) => {
-		if (element.isResizing) return;
-		startDrag(event, element);
-	};
-
 	element.value.addEventListener('mousedown', (e) => {
 		const rect = element.value.getBoundingClientRect();
 		const resizeAreaSize = 20;
@@ -78,32 +73,7 @@ export const initDraggableElements = () => {
 			element.value.style.top = `${y}px`;
 		});
 
-		document.addEventListener(
-			'touchmove',
-			(event: TouchEvent) => {
-				if (element.isResizing || !element.isDragging) return;
-
-				const touch = event.touches[0];
-				if (!touch) return;
-
-				const x = element.startLeft + (touch.pageX - element.startX);
-				const y = element.startTop + (touch.pageY - element.startY);
-
-				element.value.style.left = `${x}px`;
-				element.value.style.top = `${y}px`;
-			},
-			{ passive: false },
-		);
-
 		document.addEventListener('mouseup', () => {
-			element.isDragging = false;
-			element.isResizing = false;
-			element.value.style.cursor = '';
-			element.value.style.userSelect = '';
-			document.body.style.userSelect = '';
-		});
-
-		document.addEventListener('touchend', () => {
 			element.isDragging = false;
 			element.isResizing = false;
 			element.value.style.cursor = '';

@@ -1,0 +1,160 @@
+@import 'tailwindcss';
+
+.writeups-container {
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 2rem;
+}
+
+.search-container {
+	position: relative;
+	max-width: 600px;
+	margin: 0 auto 2rem;
+}
+
+#search-input {
+	width: 100%;
+	padding: 12px 20px;
+	font-size: 16px;
+	background-color: rgb(0 0 0 / 70%);
+	color: #0f0;
+	border: 1px solid #0f0;
+	border-radius: 4px;
+	font-family: 'Courier New', monospace;
+}
+
+#search-input:focus {
+	outline: none;
+	box-shadow: 0 0 10px #0f0;
+}
+
+#results-count {
+	display: block;
+	margin-top: 8px;
+	font-size: 14px;
+	color: #0f0;
+	text-align: center;
+}
+
+.writeups-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+	gap: 20px;
+	margin-bottom: 2rem;
+}
+
+.writeup-card {
+	background-color: rgb(0 0 0 / 80%);
+	border: 1px solid #0f0;
+	border-radius: 4px;
+	padding: 20px;
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.writeup-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 2px;
+	background: linear-gradient(90deg, transparent, #0f0, transparent);
+	animation: scanline 3s linear infinite;
+}
+
+.writeup-card:hover {
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgb(0 255 0 / 30%);
+}
+
+.writeup-title {
+	color: #0f0;
+	margin-bottom: 12px;
+	font-size: 1.2rem;
+	border-bottom: 1px solid #333;
+	padding-bottom: 10px;
+}
+
+.writeup-description {
+	color: #ccc;
+	margin-bottom: 15px;
+	line-height: 1.5;
+}
+
+.writeup-link {
+	display: inline-block;
+	color: #0ff;
+	text-decoration: none;
+	font-weight: bold;
+	transition: color 0.3s;
+}
+
+.writeup-link:hover {
+	color: #f0f;
+	text-shadow: 0 0 5px #f0f;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 2rem;
+}
+
+.pagination-controls {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.pagination-btn {
+	padding: 8px 16px;
+	background-color: #000;
+	color: #0f0;
+	border: 1px solid #0f0;
+	border-radius: 4px;
+	cursor: pointer;
+	font-family: 'Courier New', monospace;
+	transition: all 0.3s;
+}
+
+.pagination-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.pagination-btn:hover:not(:disabled) {
+	background-color: #0f0;
+	color: #000;
+}
+
+.page-info {
+	color: #0f0;
+	font-family: 'Courier New', monospace;
+}
+
+@keyframes scanline {
+	0% {
+		transform: translateX(-100%);
+	}
+
+	100% {
+		transform: translateX(100%);
+	}
+}
+
+@media (width <= 768px) {
+	.writeups-grid {
+		grid-template-columns: 1fr;
+	}
+
+	.pagination-controls {
+		flex-direction: column;
+		gap: 10px;
+	}
+
+	.writeups-container {
+		padding: 1rem;
+	}
+}

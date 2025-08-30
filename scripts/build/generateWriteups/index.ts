@@ -1,3 +1,7 @@
-import { Generate } from './generate';
+import { generate } from './generate';
+import { extractText } from './extractText';
+import { extractMetaData } from './extractMetaData';
+import { generateWriteupsIndex } from './generateIndex';
 
-await Generate();
+await Promise.all([generate(), extractText(), extractMetaData()]);
+await generateWriteupsIndex();
