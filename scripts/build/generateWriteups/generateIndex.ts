@@ -86,7 +86,7 @@ export async function generateWriteupsIndex() {
 		// Add the additional styles to the template
 		const templateWithStyles = template.replace(
 			'</head>',
-			`  <link rel="stylesheet" href="../assets/css/writeupIndex.css" /></head>`,
+			`  <link rel="stylesheet" href="assets/css/writeupIndex.css" /></head>`,
 		);
 
 		// Replace the content placeholder with our writeups index
@@ -94,7 +94,7 @@ export async function generateWriteupsIndex() {
 			.replace('${content}', mainContent)
 			.replace(
 				'</body>',
-				`		<script type="module" src="../assets/js/writeups.js" defer></script></body>`,
+				`		<script type="module" src="assets/js/writeups.js" defer></script></body>`,
 			);
 
 		// Write the final HTML to file
