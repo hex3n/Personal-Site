@@ -157,58 +157,50 @@ progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
 	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
 });
 
-// === INITIALIZATION (Persistent autoplay unlock) ===
+// === FINAL AUTOPLAY LOGIC (No click needed if autoplay allowed) ===
 window.addEventListener("load", async () => {
-	try {
-		updateToggleStyles();
-		shuffle.val = true;
-		const randomTrack = nextTrack();
-		playSong(randomTrack);
-		winampTrackName.innerHTML = currTrackName();
+	updateToggleStyles();
+	shuffle.val = true;
+	const randomTrack = nextTrack();
+	playSong(randomTrack);
+	winampTrackName.innerHTML = currTrackName();
 
-		winampAudio.volume = 0.0; // start muted
-		await audioCtx.resume();
-		await winampAudio.play();
-		console.info("🎶 Autoplay started muted (cross-browser safe)");
+	winampAudio.volume = 0.4; // normal volume by default
 
-		// When a song ends, automatically play another random track
-		winampAudio.addEventListener("ended", () => {
-			const next = nextTrack();
-			playSong(next);
-			winampTrackName.innerHTML = currTrackName();
-		});
-
-		// Fade in on user interaction (if not unlocked)
-		const fadeIn = () => {
-			let v = winampAudio.volume;
-			const interval = setInterval(() => {
-				if (v < 0.4) {
-					v += 0.02;
-					winampAudio.volume = v;
-				} else clearInterval(interval);
-			}, 100);
-
-			localStorage.setItem("audioUnlocked", "true"); // persist unlock
-
-			document.removeEventListener("click", fadeIn);
-			document.removeEventListener("scroll", fadeIn);
-			document.removeEventListener("keydown", fadeIn);
-		};
-
-		// only attach listeners if not yet unlocked
-		if (!localStorage.getItem("audioUnlocked")) {
-			document.addEventListener("click", fadeIn);
-			document.addEventListener("scroll", fadeIn);
-			document.addEventListener("keydown", fadeIn);
-		} else {
-			// already unlocked from previous page
-			winampAudio.volume = 0.4;
-			console.info("✅ Audio already unlocked from previous page");
+	const tryAutoplay = async () => {
+		try {
+			// try to init and play immediately
+			initAudio();
+			await audioCtx!.resume();
+			await winampAudio.play();
+			console.info("🎶 Autoplay started successfully");
+			localStorage.setItem("audioUnlocked", "true");
+			return true;
+		} catch (err) {
+			console.warn("⚠️ Autoplay blocked, waiting for interaction");
+			return false;
 		}
-	} catch (err) {
-		console.warn("⚠️ Autoplay blocked; waiting for user interaction.");
+	};
+
+	const autoplayWorked = await tryAutoplay();
+
+	// Fallback: if autoplay blocked, wait for interaction once
+	if (!autoplayWorked) {
+		const unlockAudio = async () => {
+			initAudio();
+			await audioCtx!.resume();
+			await winampAudio.play();
+			console.info("▶️ Audio unlocked by user interaction");
+			document.removeEventListener("click", unlockAudio);
+			document.removeEventListener("scroll", unlockAudio);
+			document.removeEventListener("keydown", unlockAudio);
+		};
+		document.addEventListener("click", unlockAudio);
+		document.addEventListener("scroll", unlockAudio);
+		document.addEventListener("keydown", unlockAudio);
 	}
 });
+
 
 
 // Time display
