@@ -157,7 +157,7 @@ progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
 	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
 });
 
-// === INITIALIZATION (Brave-safe autoplay) ===
+// === INITIALIZATION (Persistent autoplay unlock) ===
 window.addEventListener("load", async () => {
 	try {
 		updateToggleStyles();
@@ -178,7 +178,7 @@ window.addEventListener("load", async () => {
 			winampTrackName.innerHTML = currTrackName();
 		});
 
-		// Fade in volume on user interaction
+		// Fade in on user interaction (if not unlocked)
 		const fadeIn = () => {
 			let v = winampAudio.volume;
 			const interval = setInterval(() => {
@@ -188,15 +188,23 @@ window.addEventListener("load", async () => {
 				} else clearInterval(interval);
 			}, 100);
 
+			localStorage.setItem("audioUnlocked", "true"); // persist unlock
+
 			document.removeEventListener("click", fadeIn);
 			document.removeEventListener("scroll", fadeIn);
 			document.removeEventListener("keydown", fadeIn);
 		};
 
-		document.addEventListener("click", fadeIn);
-		document.addEventListener("scroll", fadeIn);
-		document.addEventListener("keydown", fadeIn);
-
+		// only attach listeners if not yet unlocked
+		if (!localStorage.getItem("audioUnlocked")) {
+			document.addEventListener("click", fadeIn);
+			document.addEventListener("scroll", fadeIn);
+			document.addEventListener("keydown", fadeIn);
+		} else {
+			// already unlocked from previous page
+			winampAudio.volume = 0.4;
+			console.info("✅ Audio already unlocked from previous page");
+		}
 	} catch (err) {
 		console.warn("⚠️ Autoplay blocked; waiting for user interaction.");
 	}
@@ -241,39 +249,3 @@ winampTrigger.onclick = () => (open ? closeMusicPlayer() : openMusicPlayer());
 makeDraggable(winampWindow);
 
 
-// --- Fallback for GitHub Pages root (/Rakeli/) ---
-// Ensures the player always initializes, even when served from bare index.html
-if (window.location.pathname === "/Rakeli/" || window.location.pathname === "/Rakeli/index.html") {
-	window.addEventListener("DOMContentLoaded", () => {
-		setTimeout(() => {
-			try {
-				if (audioCtx.state === "suspended") audioCtx.resume();
-				if (winampAudio.paused) {
-					shuffle.val = true;
-					const randomTrack = nextTrack();
-					playSong(randomTrack);
-					winampTrackName.innerHTML = currTrackName();
-					console.info("🎵 Fallback autoplay triggered for /Rakeli/");
-				}
-			} catch (err) {
-				console.warn("⚠️ Fallback failed:", err);
-			}
-		}, 800); // small delay to ensure DOM and bundle fully loaded
-	});
-}
-
-// Overlay fade-out on first interaction
-const overlay = document.getElementById("sound-overlay");
-if (overlay) {
-  const hideOverlay = () => {
-    overlay.classList.add("hidden");
-    document.removeEventListener("click", hideOverlay);
-    document.removeEventListener("scroll", hideOverlay);
-    document.removeEventListener("keydown", hideOverlay);
-    document.removeEventListener("touchstart", hideOverlay);
-  };
-
-  ["click", "scroll", "keydown", "touchstart"].forEach((ev) =>
-    document.addEventListener(ev, hideOverlay)
-  );
-}
