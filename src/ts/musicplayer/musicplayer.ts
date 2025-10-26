@@ -198,13 +198,14 @@ playSong(randomTrack);
 winampTrackName.innerHTML = currTrackName();
 
 // Attempt autoplay; fall back to first-click resume if blocked
-winampAudio.play().catch(() => {
-  const resume = () => {
-    winampAudio.play();
-    document.removeEventListener('click', resume);
-  };
-  document.addEventListener('click', resume);
+document.addEventListener("DOMContentLoaded", () => {
+  audioCtx.resume(); // ensure audio context is active
+  winampAudio.volume = 0.4; // optional, start quieter
+  winampAudio.play().catch(() => {
+    console.warn("Autoplay blocked by browser, resuming after interaction.");
+  });
 });
+
 
 // When a song ends, automatically play another random track
 winampAudio.addEventListener('ended', () => {
