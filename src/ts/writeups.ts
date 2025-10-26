@@ -1,3 +1,6 @@
+import './musicplayer';
+
+
 interface Writeup {
 	id: string;
 	title: string;
