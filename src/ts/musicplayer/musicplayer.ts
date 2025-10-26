@@ -239,3 +239,25 @@ winampTrigger.onclick = () => (open ? closeMusicPlayer() : openMusicPlayer());
 
 // Make draggable
 makeDraggable(winampWindow);
+
+
+// --- Fallback for GitHub Pages root (/Rakeli/) ---
+// Ensures the player always initializes, even when served from bare index.html
+if (window.location.pathname === "/Rakeli/" || window.location.pathname === "/Rakeli/index.html") {
+	window.addEventListener("DOMContentLoaded", () => {
+		setTimeout(() => {
+			try {
+				if (audioCtx.state === "suspended") audioCtx.resume();
+				if (winampAudio.paused) {
+					shuffle.val = true;
+					const randomTrack = nextTrack();
+					playSong(randomTrack);
+					winampTrackName.innerHTML = currTrackName();
+					console.info("🎵 Fallback autoplay triggered for /Rakeli/");
+				}
+			} catch (err) {
+				console.warn("⚠️ Fallback failed:", err);
+			}
+		}, 800); // small delay to ensure DOM and bundle fully loaded
+	});
+}
