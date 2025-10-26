@@ -74,7 +74,9 @@ function animate() {
 function playSong(filePath: string) {
 	winampAudio.src = filePath;
 	winampAudio.load();
-	winampAudio.play();
+	winampAudio.play().catch(() => {
+		console.warn("Autoplay blocked, waiting for user interaction.");
+	});
 }
 
 // Update toggle button styles
@@ -129,7 +131,6 @@ winampAudio.addEventListener('timeupdate', () => {
 });
 
 const progressContainer = winampBar.parentElement!;
-
 let isSeeking = false;
 
 function seekAudio(clientX: number) {
@@ -140,84 +141,58 @@ function seekAudio(clientX: number) {
 	progress.style.width = `${percent * 100}%`;
 }
 
-// Mouse events
-progressContainer.addEventListener('mousedown', () => {
-	isSeeking = true;
-});
+// Seek handlers
+['mousedown', 'touchstart'].forEach(evt =>
+	progressContainer.addEventListener(evt, () => (isSeeking = true)),
+);
+
+['mouseup', 'mouseleave', 'touchend'].forEach(evt =>
+	progressContainer.addEventListener(evt, () => (isSeeking = false)),
+);
 
 progressContainer.addEventListener('mousemove', (e: MouseEvent) => {
-	if (isSeeking) {
-		seekAudio(e.clientX);
+	if (isSeeking) seekAudio(e.clientX);
+});
+progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
+	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
+});
+
+// === INITIALIZATION ===
+document.addEventListener("DOMContentLoaded", async () => {
+	try {
+		updateToggleStyles();
+		winampAudio.volume = 0.4;
+
+		shuffle.val = true;
+		const randomTrack = nextTrack();
+		playSong(randomTrack);
+		winampTrackName.innerHTML = currTrackName();
+
+		await audioCtx.resume();
+		await winampAudio.play();
+
+		console.info("🎵 Music player started automatically.");
+
+		winampAudio.addEventListener("ended", () => {
+			const next = nextTrack();
+			playSong(next);
+			winampTrackName.innerHTML = currTrackName();
+		});
+	} catch (err) {
+		console.warn("⚠️ Autoplay blocked by browser; waiting for click.");
+		const resumePlayback = () => {
+			audioCtx.resume();
+			winampAudio.play();
+			document.removeEventListener("click", resumePlayback);
+			console.info("▶️ Music resumed after user interaction.");
+		};
+		document.addEventListener("click", resumePlayback);
 	}
 });
 
-progressContainer.addEventListener('mouseup', () => {
-	isSeeking = false;
-});
-
-progressContainer.addEventListener('mouseleave', () => {
-	isSeeking = false;
-});
-
-// Touch events
-progressContainer.addEventListener(
-	'touchstart',
-	(e: TouchEvent) => {
-		isSeeking = true;
-		if (e.touches.length > 0 && e.touches[0]) {
-			seekAudio(e.touches[0].clientX);
-		}
-	},
-	{ passive: false },
-);
-
-progressContainer.addEventListener(
-	'touchmove',
-	(e: TouchEvent) => {
-		if (isSeeking && e.touches.length > 0 && e.touches[0]) {
-			seekAudio(e.touches[0].clientX);
-		}
-	},
-	{ passive: false },
-);
-
-progressContainer.addEventListener('touchend', () => {
-	isSeeking = false;
-});
-
-// Initial setup
-winampAudio.src = currTrack();
-winampAudio.load();
-winampTrackName.innerHTML = currTrackName();
-updateToggleStyles();
-
-// Enable shuffle at start and play a random track
-shuffle.val = true;  // turn on shuffle mode
-const randomTrack = nextTrack();  // get a random track
-playSong(randomTrack);
-winampTrackName.innerHTML = currTrackName();
-
-// Attempt autoplay; fall back to first-click resume if blocked
-document.addEventListener("DOMContentLoaded", () => {
-  audioCtx.resume(); // ensure audio context is active
-  winampAudio.volume = 0.4; // optional, start quieter
-  winampAudio.play().catch(() => {
-    console.warn("Autoplay blocked by browser, resuming after interaction.");
-  });
-});
-
-
-// When a song ends, automatically play another random track
-winampAudio.addEventListener('ended', () => {
-  const next = nextTrack();
-  playSong(next);
-  winampTrackName.innerHTML = currTrackName();
-});
-
-
+// Time display
 const currentTimeEl = document.getElementById('current-time')!;
 const totalTimeEl = document.getElementById('total-time')!;
-
 function formatTime(time: number): string {
 	const minutes = Math.floor(time / 60)
 		.toString()
@@ -227,32 +202,27 @@ function formatTime(time: number): string {
 		.padStart(2, '0');
 	return `${minutes}:${seconds}`;
 }
-
 winampAudio.addEventListener('timeupdate', () => {
 	currentTimeEl.textContent = formatTime(winampAudio.currentTime);
 });
-
 winampAudio.addEventListener('loadedmetadata', () => {
 	totalTimeEl.textContent = formatTime(winampAudio.duration);
 });
 
+// Player toggle
+let open = false;
 const closeMusicPlayer = () => {
 	winampWindow.classList.remove('open');
 	winampWindow.classList.add('close');
 	open = false;
 };
-
 const openMusicPlayer = () => {
 	winampWindow.classList.remove('hidden');
 	winampWindow.classList.remove('close');
 	winampWindow.classList.add('open');
 	open = true;
 };
+winampTrigger.onclick = () => (open ? closeMusicPlayer() : openMusicPlayer());
 
-let open = false;
-winampTrigger.onclick = () => {
-	if (open) closeMusicPlayer();
-	else openMusicPlayer();
-};
-
+// Make draggable
 makeDraggable(winampWindow);
