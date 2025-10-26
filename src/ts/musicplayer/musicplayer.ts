@@ -261,3 +261,19 @@ if (window.location.pathname === "/Rakeli/" || window.location.pathname === "/Ra
 		}, 800); // small delay to ensure DOM and bundle fully loaded
 	});
 }
+
+// Overlay fade-out on first interaction
+const overlay = document.getElementById("sound-overlay");
+if (overlay) {
+  const hideOverlay = () => {
+    overlay.classList.add("hidden");
+    document.removeEventListener("click", hideOverlay);
+    document.removeEventListener("scroll", hideOverlay);
+    document.removeEventListener("keydown", hideOverlay);
+    document.removeEventListener("touchstart", hideOverlay);
+  };
+
+  ["click", "scroll", "keydown", "touchstart"].forEach((ev) =>
+    document.addEventListener(ev, hideOverlay)
+  );
+}
