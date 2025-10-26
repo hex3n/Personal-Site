@@ -190,6 +190,30 @@ winampAudio.src = currTrack();
 winampAudio.load();
 winampTrackName.innerHTML = currTrackName();
 updateToggleStyles();
+
+// Enable shuffle at start and play a random track
+shuffle.val = true;  // turn on shuffle mode
+const randomTrack = nextTrack();  // get a random track
+playSong(randomTrack);
+winampTrackName.innerHTML = currTrackName();
+
+// Attempt autoplay; fall back to first-click resume if blocked
+winampAudio.play().catch(() => {
+  const resume = () => {
+    winampAudio.play();
+    document.removeEventListener('click', resume);
+  };
+  document.addEventListener('click', resume);
+});
+
+// When a song ends, automatically play another random track
+winampAudio.addEventListener('ended', () => {
+  const next = nextTrack();
+  playSong(next);
+  winampTrackName.innerHTML = currTrackName();
+});
+
+
 const currentTimeEl = document.getElementById('current-time')!;
 const totalTimeEl = document.getElementById('total-time')!;
 
