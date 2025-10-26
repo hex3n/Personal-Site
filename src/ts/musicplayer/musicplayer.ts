@@ -157,38 +157,51 @@ progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
 	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
 });
 
-// === INITIALIZATION ===
-document.addEventListener("DOMContentLoaded", async () => {
+// === INITIALIZATION (Brave-safe autoplay) ===
+window.addEventListener("load", async () => {
 	try {
 		updateToggleStyles();
-		winampAudio.volume = 0.4;
-
 		shuffle.val = true;
 		const randomTrack = nextTrack();
 		playSong(randomTrack);
 		winampTrackName.innerHTML = currTrackName();
 
+		winampAudio.volume = 0.0; // start muted
 		await audioCtx.resume();
 		await winampAudio.play();
+		console.info("🎶 Autoplay started muted (cross-browser safe)");
 
-		console.info("🎵 Music player started automatically.");
-
+		// When a song ends, automatically play another random track
 		winampAudio.addEventListener("ended", () => {
 			const next = nextTrack();
 			playSong(next);
 			winampTrackName.innerHTML = currTrackName();
 		});
-	} catch (err) {
-		console.warn("⚠️ Autoplay blocked by browser; waiting for click.");
-		const resumePlayback = () => {
-			audioCtx.resume();
-			winampAudio.play();
-			document.removeEventListener("click", resumePlayback);
-			console.info("▶️ Music resumed after user interaction.");
+
+		// Fade in volume on user interaction
+		const fadeIn = () => {
+			let v = winampAudio.volume;
+			const interval = setInterval(() => {
+				if (v < 0.4) {
+					v += 0.02;
+					winampAudio.volume = v;
+				} else clearInterval(interval);
+			}, 100);
+
+			document.removeEventListener("click", fadeIn);
+			document.removeEventListener("scroll", fadeIn);
+			document.removeEventListener("keydown", fadeIn);
 		};
-		document.addEventListener("click", resumePlayback);
+
+		document.addEventListener("click", fadeIn);
+		document.addEventListener("scroll", fadeIn);
+		document.addEventListener("keydown", fadeIn);
+
+	} catch (err) {
+		console.warn("⚠️ Autoplay blocked; waiting for user interaction.");
 	}
 });
+
 
 // Time display
 const currentTimeEl = document.getElementById('current-time')!;
