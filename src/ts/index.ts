@@ -1,7 +1,8 @@
-import { initDraggableElements } from './drag';
+import './musicplayer';
 
+
+import { initDraggableElements } from './drag';
 export * from './musicplayer';
 export * from './terminal';
-import './musicplayer';
 
 initDraggableElements();
