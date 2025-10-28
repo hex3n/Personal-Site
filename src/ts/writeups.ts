@@ -180,3 +180,85 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Initial render
 	renderWriteups();
 });
+
+
+// -----------------------------
+// ✨ Interactive Filtering Logic
+// -----------------------------
+
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = Array.from(document.querySelectorAll(".writeup-card")) as HTMLElement[];
+  const searchInput = document.getElementById("search-input") as HTMLInputElement;
+  const categorySelect = document.getElementById("sortCategory") as HTMLSelectElement;
+  const dateSelect = document.getElementById("sortDate") as HTMLSelectElement;
+  const tags = Array.from(document.querySelectorAll(".tag"));
+  const resultsCount = document.getElementById("results-count");
+
+  // Function to update the visible writeups
+  function updateVisibleCards() {
+    const searchTerm = searchInput?.value.toLowerCase() || "";
+    const selectedCategory = categorySelect?.value.toLowerCase() || "all";
+
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const title = card.querySelector(".writeup-title")?.textContent?.toLowerCase() || "";
+      const desc = card.querySelector(".writeup-description")?.textContent?.toLowerCase() || "";
+
+      const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
+      const matchesCategory =
+        selectedCategory === "all" ||
+        title.includes(selectedCategory) ||
+        desc.includes(selectedCategory);
+
+      const isVisible = matchesSearch && matchesCategory;
+      card.style.display = isVisible ? "block" : "none";
+      if (isVisible) visibleCount++;
+    });
+
+    if (resultsCount) resultsCount.textContent = `(${visibleCount} results)`;
+  }
+
+  // Handle search input
+  if (searchInput) {
+    searchInput.addEventListener("input", updateVisibleCards);
+  }
+
+  // Handle category select
+  if (categorySelect) {
+    categorySelect.addEventListener("change", updateVisibleCards);
+  }
+
+  // Handle tag clicks
+  tags.forEach((tag) => {
+    tag.addEventListener("click", () => {
+      const tagValue = tag.getAttribute("data-tag")?.toLowerCase() || "";
+      categorySelect.value = tagValue || "all";
+      updateVisibleCards();
+    });
+  });
+
+  // Handle date sort (placeholder demo)
+  if (dateSelect) {
+    dateSelect.addEventListener("change", () => {
+      const sortOrder = dateSelect.value;
+      const listContainer = document.getElementById("writeupsList");
+
+      if (!listContainer) return;
+      const sorted = [...cards].sort((a, b) => {
+        const aTitle = a.querySelector(".writeup-title")?.textContent || "";
+        const bTitle = b.querySelector(".writeup-title")?.textContent || "";
+
+        return sortOrder === "newest"
+          ? bTitle.localeCompare(aTitle)
+          : aTitle.localeCompare(bTitle);
+      });
+
+      listContainer.innerHTML = "";
+      sorted.forEach((c) => listContainer.appendChild(c));
+    });
+  }
+
+  // Initial update
+  updateVisibleCards();
+});
