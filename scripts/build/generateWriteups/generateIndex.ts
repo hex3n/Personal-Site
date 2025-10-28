@@ -1,6 +1,9 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
+console.log("🚧 Using custom modified writeups index generator...");
+
+
 interface Writeup {
 	id: string;
 	title: string;
@@ -62,26 +65,70 @@ export async function generateWriteupsIndex() {
 		}
 
 		// Create the main content for the writeups index
-		const mainContent = `
-      <div class="writeups-container">
-        <h1 class="cyber-text glitch-effect text-center" data-text="PENETRATION_TESTING_WRITEUPS">
-          PENETRATION_TESTING_WRITEUPS
-        </h1>
-        
-        <div class="search-container">
-          <input type="text" id="search-input" placeholder="SEARCH_WRITEUPS...">
-          <span id="results-count"></span>
-        </div>
-        
-        <div id="writeupsList" class="writeups-grid">
-          ${writeupsHtml}
-        </div>
-        
-        <div class="pagination">
-          ${paginationHtml}
-        </div>
+const mainContent = `
+  <div class="writeups-container">
+    <h1 class="cyber-text glitch-effect text-center" data-text="PENETRATION_TESTING_WRITEUPS">
+      PENETRATION_TESTING_WRITEUPS
+    </h1>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="SEARCH_WRITEUPS..." />
+      <span id="results-count"></span>
+    </div>
+
+    <!-- Sorting Controls -->
+    <div class="sorting-controls">
+      <div class="sort-row">
+        <label for="sortCategory" class="cyber-text">SORT_BY_CATEGORY:</label>
+        <select id="sortCategory" class="cyber-dropdown">
+          <option value="all">All</option>
+          <option value="xss">XSS</option>
+          <option value="recon">Recon</option>
+          <option value="sliver">Sliver</option>
+          <option value="tryhackme">TryHackMe</option>
+          <option value="networking">Networking</option>
+          <option value="priv-esc">Privilege Escalation</option>
+          <option value="forensics">Forensics</option>
+        </select>
+
+        <label for="sortDate" class="cyber-text ml-4">SORT_BY_DATE:</label>
+        <select id="sortDate" class="cyber-dropdown">
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
       </div>
-    `;
+    </div>
+
+    <!-- Tag Grid -->
+    <div class="tag-grid">
+      <span class="tag" data-tag="Recon">Recon</span>
+      <span class="tag" data-tag="Sliver">Sliver</span>
+      <span class="tag" data-tag="Metasploit">Metasploit</span>
+      <span class="tag" data-tag="Privilege Escalation">Privilege Escalation</span>
+      <span class="tag" data-tag="TryHackMe">TryHackMe</span>
+      <span class="tag" data-tag="HackTheBox">HackTheBox</span>
+      <span class="tag" data-tag="Forensics">Forensics</span>
+      <span class="tag" data-tag="Enumeration">Enumeration</span>
+      <span class="tag" data-tag="Web Exploitation">Web Exploitation</span>
+      <span class="tag" data-tag="Cryptography">Cryptography</span>
+      <span class="tag" data-tag="Memory Analysis">Memory Analysis</span>
+      <span class="tag" data-tag="Red Team">Red Team</span>
+    </div>
+
+    <!-- Writeup Cards -->
+    <div id="writeupsList" class="writeups-grid">
+      ${writeupsHtml}
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      ${paginationHtml}
+    </div>
+  </div>
+`;
+
+
 
 		// Add the additional styles to the template
 		const templateWithStyles = template.replace(
