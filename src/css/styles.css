@@ -5480,3 +5480,87 @@
   }
 }
 
+/* Blood red + cyberpunk glow */
+.text-bloodyred {
+  color: #ff003c;
+  text-shadow: 0 0 12px #ff003c, 0 0 24px #ff1b47, 0 0 36px #ff3358;
+}
+
+.ctf-card {
+  border: 2px solid rgba(255, 0, 60, 0.4);
+  box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+}
+.ctf-card:hover {
+  border-color: #ff003c;
+  box-shadow: 0 0 25px rgba(255, 0, 60, 0.6);
+}
+
+/* Crosshair & bullet impact animation */
+.crosshair-container {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+.crosshair {
+  width: 100%;
+  height: 100%;
+  border: 2px solid #ff003c;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  animation: rotateCrosshair 3s linear infinite;
+}
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  position: absolute;
+  width: 2px;
+  height: 50%;
+  background: #ff003c;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.crosshair::after {
+  transform: rotate(90deg);
+  transform-origin: center;
+}
+
+.bullet-impact {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: radial-gradient(circle, #ff003c 0%, transparent 80%);
+  border-radius: 50%;
+  top: 20px;
+  left: 20px;
+  opacity: 0;
+  animation: bulletShot 3s ease-in-out infinite;
+}
+
+@keyframes rotateCrosshair {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bulletShot {
+  0%, 80% { opacity: 0; transform: scale(0.2); }
+  90% { opacity: 1; transform: scale(2.5); box-shadow: 0 0 25px #ff003c; }
+  100% { opacity: 0; transform: scale(0.1); }
+}
+
+/* Red neon background pulse */
+.cyberpunk-bg-glow {
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle at center, rgba(255,0,60,0.15) 0%, transparent 70%);
+  filter: blur(100px);
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  from { opacity: 0.3; transform: scale(1); }
+  to { opacity: 0.8; transform: scale(1.1); }
+}
