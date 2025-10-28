@@ -5668,3 +5668,43 @@
 .certifications-section {
   margin-bottom: 8rem !important;
 }
+
+/* ========================= */
+/* FIX: Restore text + crosshair visibility */
+/* ========================= */
+
+.ctf-card,
+.ctf-badge,
+.ctf-card h3,
+.ctf-card p {
+  position: relative;
+  z-index: 5;
+}
+
+.ctf-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(255, 0, 40, 0.15), transparent 70%);
+  opacity: 0.3;
+  z-index: 1;
+  border-radius: 10px;
+}
+
+/* Crosshair image or element */
+.crosshair-icon {
+  width: 45px;
+  height: 45px;
+  margin-left: 10px;
+  vertical-align: middle;
+  position: relative;
+  z-index: 50;
+  filter: drop-shadow(0 0 6px rgba(255, 0, 40, 0.9));
+  animation: flicker-red 2s infinite alternate;
+}
+
+/* Bloody neon flicker for crosshair */
+@keyframes flicker-red {
+  0%, 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 0, 40, 1)); }
+  50% { opacity: 0.7; filter: drop-shadow(0 0 18px rgba(255, 0, 60, 1)); }
+}
