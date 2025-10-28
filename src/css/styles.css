@@ -5540,62 +5540,83 @@
 }
 
 /* ========================= */
-/* CROSSHAIR + BULLET IMPACT */
+/* CROSSHAIR - NEON RED RETICLE */
 /* ========================= */
+
 .crosshair-container {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+/* Outer ring */
 .crosshair {
+  position: absolute;
   width: 100%;
   height: 100%;
-  border: 2px solid #ff003c;
+  border: 3px solid #ff1b47;
   border-radius: 50%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  animation: rotateCrosshair 4s linear infinite;
+  box-shadow: 0 0 25px #ff003c, 0 0 60px #ff1b47;
+  animation: crosshairPulse 3s infinite ease-in-out;
 }
 
-.crosshair::before,
+/* Inner center dot */
+.crosshair::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #ff003c;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff003c, 0 0 20px #ff1b47;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* Four reticle lines */
 .crosshair::after {
   content: "";
   position: absolute;
-  width: 2px;
-  height: 50%;
-  background: #ff003c;
   top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.crosshair::after {
-  transform: rotate(90deg);
-  transform-origin: center;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:
+    linear-gradient(to right, transparent 49%, #ff003c 50%, transparent 51%),
+    linear-gradient(to bottom, transparent 49%, #ff003c 50%, transparent 51%);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 4px #ff003c) drop-shadow(0 0 8px #ff1b47);
 }
 
+/* Bullet impact flash */
 .bullet-impact {
   position: absolute;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, #ff003c 0%, transparent 80%);
+  width: 15px;
+  height: 15px;
+  background: radial-gradient(circle, #ffffff 0%, #ff003c 60%, transparent 80%);
   border-radius: 50%;
-  top: 24px;
-  left: 24px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
   opacity: 0;
-  animation: bulletImpact 4s ease-in-out infinite;
+  animation: muzzleFlash 3s ease-in-out infinite;
 }
 
-@keyframes rotateCrosshair {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+/* Animations */
+@keyframes crosshairPulse {
+  0%, 100% { box-shadow: 0 0 20px #ff003c, 0 0 40px #ff1b47; opacity: 0.8; }
+  50% { box-shadow: 0 0 40px #ff1b47, 0 0 80px #ff3358; opacity: 1; }
 }
 
-@keyframes bulletImpact {
-  0%, 80% { opacity: 0; transform: scale(0.2); }
-  90% { opacity: 1; transform: scale(2.5); box-shadow: 0 0 25px #ff003c; }
-  100% { opacity: 0; transform: scale(0.1); }
+@keyframes muzzleFlash {
+  0%, 85% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
+  90% { opacity: 1; transform: translate(-50%, -50%) scale(3); box-shadow: 0 0 50px #fff; }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(0); }
 }
 
 /* Add a big visual gap between previous section */
