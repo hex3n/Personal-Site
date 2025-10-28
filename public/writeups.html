@@ -116,178 +116,74 @@ import './musicplayer';
           <span id="results-count"></span>
         </div>
         
-<!-- ===== Writeup Sorting & Tag Filtering ===== -->
-<section class="filter-controls text-center mt-10 mb-10">
-  <div class="sort-bar mb-6">
-    <label for="sort-select" class="text-neonpink text-sm tracking-wide mr-2">SORT BY:</label>
-    <select id="sort-select" class="bg-black border border-neongreen text-neongreen px-3 py-2 rounded-md">
-      <option value="date">Date Posted</option>
-      <option value="category">Category</option>
-    </select>
-  </div>
-
-  <div class="tags-grid grid grid-cols-6 gap-3 justify-center max-w-5xl mx-auto">
-    <button class="tag-btn">Recon</button>
-    <button class="tag-btn">Sliver</button>
-    <button class="tag-btn">Metasploit</button>
-    <button class="tag-btn">TryHackMe</button>
-    <button class="tag-btn">Privilege Escalation</button>
-    <button class="tag-btn">Exploit Dev</button>
-    <button class="tag-btn">Web</button>
-    <button class="tag-btn">OSINT</button>
-    <button class="tag-btn">Reverse Engineering</button>
-    <button class="tag-btn">Memory Forensics</button>
-    <button class="tag-btn">CTF</button>
-    <button class="tag-btn">Enumeration</button>
-    <button class="tag-btn">SQLi</button>
-    <button class="tag-btn">XSS</button>
-    <button class="tag-btn">Red Team</button>
-    <button class="tag-btn">Forensics</button>
-    <button class="tag-btn">Windows</button>
-    <button class="tag-btn">Linux</button>
-    <button class="tag-btn">Payloads</button>
-    <button class="tag-btn">Automation</button>
-    <button class="tag-btn">Post Exploitation</button>
-    <button class="tag-btn">Misc</button>
-  </div>
-</section>
-
-<div id="writeupsList" class="writeups-grid">
-  
-  <div class="writeup-card" 
-       data-id="input" 
-       data-category="Web" 
-       data-date="2025-09-05" 
-       data-tags="Web,XSS,Input Validation,TryHackMe">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability</h2>
-    <p class="writeup-description">
-      During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.
-    </p>
-    <a href="writeups/input.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_1" 
-       data-category="Web" 
-       data-date="2025-09-12" 
-       data-tags="Web,Stored XSS,TryHackMe,CTF">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability</h2>
-    <p class="writeup-description">
-      During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.
-    </p>
-    <a href="writeups/xss_writeup_1.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_10" 
-       data-category="Admin Panel" 
-       data-date="2025-09-18" 
-       data-tags="Admin,XSS,Stored XSS,Privilege Escalation">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Admin Panel</h2>
-    <p class="writeup-description">
-      A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.
-    </p>
-    <a href="writeups/xss_writeup_10.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_2" 
-       data-category="Client-Side" 
-       data-date="2025-09-22" 
-       data-tags="DOM XSS,JavaScript,Client-Side,Web">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: DOM-Based XSS Vulnerability</h2>
-    <p class="writeup-description">
-      A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.
-    </p>
-    <a href="writeups/xss_writeup_2.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_3" 
-       data-category="Web Forms" 
-       data-date="2025-09-25" 
-       data-tags="Reflected XSS,Form Input,Web,CTF">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Reflected XSS in Form Input</h2>
-    <p class="writeup-description">
-      A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s form submission process during a penetration test. This vulnerability allows attackers to inject malicious scripts via form inputs, which are reflected in the response, compromising user security.
-    </p>
-    <a href="writeups/xss_writeup_3.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_4" 
-       data-category="Web Parameters" 
-       data-date="2025-09-29" 
-       data-tags="Reflected XSS,URL Parameter,Web,TryHackMe">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in URL Parameter</h2>
-    <p class="writeup-description">
-      A penetration test on [Target Application] revealed a Reflected Cross-Site Scripting (XSS) vulnerability in a URL parameter. This flaw allows attackers to inject scripts that execute in users’ browsers, posing risks like session hijacking and data theft.
-    </p>
-    <a href="writeups/xss_writeup_4.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_5" 
-       data-category="User Profile" 
-       data-date="2025-10-02" 
-       data-tags="Stored XSS,Profile Injection,User Data,Web">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in User Profile</h2>
-    <p class="writeup-description">
-      A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s user profile editing feature during a penetration test. This flaw allows attackers to inject scripts that execute for users viewing the profile, risking data theft and account compromise.
-    </p>
-    <a href="writeups/xss_writeup_5.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_6" 
-       data-category="Search Feature" 
-       data-date="2025-10-08" 
-       data-tags="Reflected XSS,Autocomplete,Web,TryHackMe">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Search Autocomplete</h2>
-    <p class="writeup-description">
-      A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s search autocomplete feature during a penetration test. This allows attackers to inject scripts via the autocomplete query, compromising user security.
-    </p>
-    <a href="writeups/xss_writeup_6.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_7" 
-       data-category="Chat Feature" 
-       data-date="2025-10-12" 
-       data-tags="Stored XSS,Chat,Messaging,Web,CTF">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Chat Feature</h2>
-    <p class="writeup-description">
-      A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s chat feature during a penetration test. This flaw allows attackers to inject scripts into chat messages, affecting all users in the chat.
-    </p>
-    <a href="writeups/xss_writeup_7.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_8" 
-       data-category="File Upload" 
-       data-date="2025-10-18" 
-       data-tags="Stored XSS,File Upload,Metadata Injection,Web">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in File Upload</h2>
-    <p class="writeup-description">
-      A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s file upload feature, allowing attackers to embed scripts in uploaded file metadata. This report details the vulnerability and remediation steps.
-    </p>
-    <a href="writeups/xss_writeup_8.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-  <div class="writeup-card" 
-       data-id="xss_writeup_9" 
-       data-category="Feedback Form" 
-       data-date="2025-10-22" 
-       data-tags="Reflected XSS,Feedback,Web,User Interaction">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Feedback Form</h2>
-    <p class="writeup-description">
-      A Reflected Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s feedback form during a penetration test. This allows attackers to inject scripts that execute in the response, risking user security.
-    </p>
-    <a href="writeups/xss_writeup_9.html" class="writeup-link cyber-link">READ_WRITEUP</a>
-  </div>
-
-</div>
-
+        <div id="writeupsList" class="writeups-grid">
+          
+      <div class="writeup-card" data-id="input">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability</h2>
+        <p class="writeup-description">During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.</p>
+        <a href="writeups/input.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_1">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability</h2>
+        <p class="writeup-description">During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.</p>
+        <a href="writeups/xss_writeup_1.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_10">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Admin Panel</h2>
+        <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.</p>
+        <a href="writeups/xss_writeup_10.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_2">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: DOM-Based XSS Vulnerability</h2>
+        <p class="writeup-description">A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.</p>
+        <a href="writeups/xss_writeup_2.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_3">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Reflected XSS in Form Input</h2>
+        <p class="writeup-description">A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s form submission process during a penetration test. This vulnerability allows attackers to inject malicious scripts via form inputs, which are reflected in the response, compromising user security.</p>
+        <a href="writeups/xss_writeup_3.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_4">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in URL Parameter</h2>
+        <p class="writeup-description">A penetration test on [Target Application] revealed a Reflected Cross-Site Scripting (XSS) vulnerability in a URL parameter. This flaw allows attackers to inject scripts that execute in users’ browsers, posing risks like session hijacking and data theft.</p>
+        <a href="writeups/xss_writeup_4.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_5">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in User Profile</h2>
+        <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s user profile editing feature during a penetration test. This flaw allows attackers to inject scripts that execute for users viewing the profile, risking data theft and account compromise.</p>
+        <a href="writeups/xss_writeup_5.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_6">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Search Autocomplete</h2>
+        <p class="writeup-description">A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s search autocomplete feature during a penetration test. This allows attackers to inject scripts via the autocomplete query, compromising user security.</p>
+        <a href="writeups/xss_writeup_6.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_7">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Chat Feature</h2>
+        <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s chat feature during a penetration test. This flaw allows attackers to inject scripts into chat messages, affecting all users in the chat.</p>
+        <a href="writeups/xss_writeup_7.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_8">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in File Upload</h2>
+        <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s file upload feature, allowing attackers to embed scripts in uploaded file metadata. This report details the vulnerability and remediation steps.</p>
+        <a href="writeups/xss_writeup_8.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
+      <div class="writeup-card" data-id="xss_writeup_9">
+        <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Feedback Form</h2>
+        <p class="writeup-description">A Reflected Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s feedback form during a penetration test. This allows attackers to inject scripts that execute in the response, risking user security.</p>
+        <a href="writeups/xss_writeup_9.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+      </div>
+    
         </div>
         
         <div class="pagination">
@@ -342,44 +238,5 @@ import './musicplayer';
 			</footer>
 		</main>
 		<script type="module" src="assets/js/menu.js" defer></script>
-		<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const sortSelect = document.getElementById('sort-select');
-  const writeups = Array.from(document.querySelectorAll('.writeup-card'));
-  const tagButtons = document.querySelectorAll('.tag-btn');
-
-  // Sort writeups by date or category
-  function sortWriteups(criteria) {
-    let sorted;
-    if (criteria === 'date') {
-      sorted = [...writeups].sort((a, b) =>
-        new Date(b.dataset.date) - new Date(a.dataset.date)
-      );
-    } else if (criteria === 'category') {
-      sorted = [...writeups].sort((a, b) =>
-        a.dataset.category.localeCompare(b.dataset.category)
-      );
-    }
-
-    const container = writeups[0].parentNode;
-    container.innerHTML = '';
-    sorted.forEach(w => container.appendChild(w));
-  }
-
-  sortSelect.addEventListener('change', e => sortWriteups(e.target.value));
-
-  // Tag filtering
-  tagButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const tag = btn.textContent.trim().toLowerCase();
-      writeups.forEach(w => {
-        const tags = w.dataset.tags.toLowerCase();
-        w.style.display = tags.includes(tag) ? 'block' : 'none';
-      });
-    });
-  });
-});
-</script>
-
 			<script type="module" src="assets/js/writeups.js" defer></script></body>
 </html>
