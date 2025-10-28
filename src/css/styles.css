@@ -5377,35 +5377,35 @@
 }
 
 
-
-/* Holographic flicker + scanlines + neon pulse */
+/* Holographic flicker + stronger TV static + neon pulse */
 .cyber-cert-card.holo {
   position: relative;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0.5rem rgba(0, 255, 255, 0.15), inset 0 0 0.5rem rgba(255, 0, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0.75rem rgba(0, 255, 255, 0.25),
+              inset 0 0 0.75rem rgba(255, 0, 255, 0.15);
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
   will-change: transform, box-shadow;
 }
 
-/* subtle neon shimmer that shifts over time */
+/* shimmering holographic gradient */
 .cyber-cert-card.holo::before {
   content: "";
   position: absolute;
   inset: -20%;
   background: conic-gradient(
     from 0deg,
-    rgba(0,255,255,0.12),
-    rgba(255,0,255,0.08),
-    rgba(0,255,255,0.12)
+    rgba(0,255,255,0.25),
+    rgba(255,0,255,0.2),
+    rgba(0,255,255,0.25)
   );
-  filter: blur(16px);
-  opacity: 0.25;
-  animation: holoSpin 12s linear infinite;
+  filter: blur(18px);
+  opacity: 0.45;
+  animation: holoSpin 8s linear infinite;
   pointer-events: none;
 }
 
-/* scanline overlay + occasional flicker pops */
+/* dense scanlines + static noise flicker */
 .cyber-cert-card.holo::after {
   content: "";
   position: absolute;
@@ -5413,60 +5413,62 @@
   background:
     repeating-linear-gradient(
       to bottom,
-      rgba(255,255,255,0.06) 0px,
-      rgba(255,255,255,0.06) 1px,
+      rgba(255,255,255,0.1) 0px,
+      rgba(255,255,255,0.1) 1px,
       transparent 2px,
-      transparent 4px
+      transparent 3px
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.08) 0%,
+      rgba(0,0,0,0.15) 80%
     );
   mix-blend-mode: screen;
-  opacity: 0.25;
-  animation: holoFlicker 3.2s steps(24, end) infinite;
+  opacity: 0.35;
+  animation: holoFlickerStrong 1.8s steps(40, end) infinite;
   pointer-events: none;
 }
 
-/* hover: lift + stronger glow */
+/* stronger hover lift + glow */
 .cyber-cert-card.holo:hover {
-  transform: translateY(-2px);
-  border-color: rgba(255, 255, 255, 0.18);
+  transform: translateY(-3px) scale(1.02);
+  border-color: rgba(255,255,255,0.25);
   box-shadow:
-    0 0 1rem rgba(0, 255, 255, 0.25),
-    0 0 2rem rgba(255, 0, 255, 0.2),
-    inset 0 0 0.75rem rgba(255, 255, 255, 0.06);
+    0 0 1.25rem rgba(0,255,255,0.4),
+    0 0 2.5rem rgba(255,0,255,0.3),
+    inset 0 0 1rem rgba(255,255,255,0.08);
 }
 
-/* title gentle pulse */
+/* glowing pulse on titles */
 .cyber-cert-card.holo h3 {
-  text-shadow:
-    0 0 6px currentColor,
-    0 0 12px currentColor;
-  animation: neonPulse 2.6s ease-in-out infinite;
+  text-shadow: 0 0 6px currentColor, 0 0 16px currentColor;
+  animation: neonPulse 2.4s ease-in-out infinite;
 }
 
-/* keyframes */
+/* --- Animations --- */
 @keyframes holoSpin {
   0%   { transform: rotate(0deg) scale(1); }
-  50%  { transform: rotate(180deg) scale(1.03); }
+  50%  { transform: rotate(180deg) scale(1.04); }
   100% { transform: rotate(360deg) scale(1); }
 }
 
-@keyframes holoFlicker {
-  0%, 100% { opacity: 0.22; }
-  5%       { opacity: 0.35; }
-  9%       { opacity: 0.18; }
-  14%      { opacity: 0.32; }
-  17%      { opacity: 0.20; }
-  24%      { opacity: 0.30; }
-  37%      { opacity: 0.16; }
-  43%      { opacity: 0.36; }
-  56%      { opacity: 0.21; }
-  68%      { opacity: 0.33; }
-  78%      { opacity: 0.19; }
-  89%      { opacity: 0.31; }
+@keyframes holoFlickerStrong {
+  0%, 100% { opacity: 0.28; filter: brightness(1); }
+  5%  { opacity: 0.45; filter: brightness(1.5); }
+  10% { opacity: 0.22; filter: brightness(0.8); }
+  17% { opacity: 0.55; filter: brightness(1.6); }
+  23% { opacity: 0.25; filter: brightness(0.9); }
+  34% { opacity: 0.48; filter: brightness(1.4); }
+  45% { opacity: 0.3;  filter: brightness(1); }
+  55% { opacity: 0.52; filter: brightness(1.5); }
+  63% { opacity: 0.26; filter: brightness(0.9); }
+  78% { opacity: 0.5;  filter: brightness(1.3); }
+  90% { opacity: 0.32; filter: brightness(1.1); }
 }
 
 @keyframes neonPulse {
-  0%, 100% { filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 8px currentColor); }
-  50%      { filter: drop-shadow(0 0 4px currentColor) drop-shadow(0 0 14px currentColor); }
+  0%, 100% { filter: drop-shadow(0 0 2px currentColor) drop-shadow(0 0 10px currentColor); }
+  50%      { filter: drop-shadow(0 0 6px currentColor) drop-shadow(0 0 18px currentColor); }
 }
 
 /* Respect reduced motion */
@@ -5477,3 +5479,4 @@
     animation: none !important;
   }
 }
+
