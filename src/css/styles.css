@@ -5479,28 +5479,75 @@
     animation: none !important;
   }
 }
+/* ========================= */
+/* CYBERPUNK BLOODY RED THEME */
+/* ========================= */
 
-/* Blood red + cyberpunk glow */
 .text-bloodyred {
   color: #ff003c;
-  text-shadow: 0 0 12px #ff003c, 0 0 24px #ff1b47, 0 0 36px #ff3358;
+  text-shadow: 0 0 15px #ff003c, 0 0 25px #ff1b47, 0 0 40px #ff3358;
 }
 
+.cyberpunk-bg-glow-red {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at center, rgba(255, 0, 60, 0.15) 0%, transparent 70%);
+  filter: blur(120px);
+  animation: pulseRed 5s ease-in-out infinite alternate;
+}
+
+@keyframes pulseRed {
+  from { opacity: 0.2; transform: scale(1); }
+  to { opacity: 0.6; transform: scale(1.1); }
+}
+
+/* CTF CARD STYLING */
 .ctf-card {
+  background: rgba(10, 0, 0, 0.85);
   border: 2px solid rgba(255, 0, 60, 0.4);
   box-shadow: 0 0 15px rgba(255, 0, 60, 0.2);
+  border-radius: 10px;
+  padding: 2rem;
+  transition: all 0.3s ease-in-out;
 }
 .ctf-card:hover {
   border-color: #ff003c;
-  box-shadow: 0 0 25px rgba(255, 0, 60, 0.6);
+  box-shadow: 0 0 35px rgba(255, 0, 60, 0.7);
+  transform: scale(1.05);
 }
 
-/* Crosshair & bullet impact animation */
+.ctf-card h3 {
+  color: #ff1b47;
+  font-weight: bold;
+  font-size: 1.6rem;
+  margin-top: 1rem;
+  text-shadow: 0 0 15px #ff003c;
+}
+
+.ctf-card p {
+  color: #bbb;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+}
+
+.ctf-img {
+  border: 2px solid #ff003c;
+  border-radius: 8px;
+  width: 100%;
+  height: auto;
+  box-shadow: 0 0 25px rgba(255, 0, 60, 0.5);
+}
+
+/* ========================= */
+/* CROSSHAIR + BULLET IMPACT */
+/* ========================= */
 .crosshair-container {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
   position: relative;
 }
+
 .crosshair {
   width: 100%;
   height: 100%;
@@ -5509,8 +5556,9 @@
   position: absolute;
   top: 0;
   left: 0;
-  animation: rotateCrosshair 3s linear infinite;
+  animation: rotateCrosshair 4s linear infinite;
 }
+
 .crosshair::before,
 .crosshair::after {
   content: "";
@@ -5529,14 +5577,14 @@
 
 .bullet-impact {
   position: absolute;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   background: radial-gradient(circle, #ff003c 0%, transparent 80%);
   border-radius: 50%;
-  top: 20px;
-  left: 20px;
+  top: 24px;
+  left: 24px;
   opacity: 0;
-  animation: bulletShot 3s ease-in-out infinite;
+  animation: bulletImpact 4s ease-in-out infinite;
 }
 
 @keyframes rotateCrosshair {
@@ -5544,23 +5592,13 @@
   to { transform: rotate(360deg); }
 }
 
-@keyframes bulletShot {
+@keyframes bulletImpact {
   0%, 80% { opacity: 0; transform: scale(0.2); }
   90% { opacity: 1; transform: scale(2.5); box-shadow: 0 0 25px #ff003c; }
   100% { opacity: 0; transform: scale(0.1); }
 }
 
-/* Red neon background pulse */
-.cyberpunk-bg-glow {
-  position: absolute;
-  width: 150%;
-  height: 150%;
-  background: radial-gradient(circle at center, rgba(255,0,60,0.15) 0%, transparent 70%);
-  filter: blur(100px);
-  animation: pulseGlow 4s ease-in-out infinite alternate;
-}
-
-@keyframes pulseGlow {
-  from { opacity: 0.3; transform: scale(1); }
-  to { opacity: 0.8; transform: scale(1.1); }
+/* Add a big visual gap between previous section */
+.certifications-section {
+  margin-bottom: 8rem !important;
 }
