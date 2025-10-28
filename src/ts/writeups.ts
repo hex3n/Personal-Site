@@ -1,5 +1,6 @@
 import './musicplayer';
 
+console.log("✅ writeups.js loaded!");
 
 interface Writeup {
 	id: string;
