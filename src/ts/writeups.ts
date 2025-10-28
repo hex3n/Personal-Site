@@ -67,199 +67,105 @@ const writeups: Writeup[] = [
   }
 ];
 // AUTO-GENERATED-WRITEUPS-END
-
-// Rest of your existing writeups.ts code goes here
 document.addEventListener('DOMContentLoaded', function () {
-	const writeupsList = document.getElementById('writeupsList');
-	const searchInput = document.getElementById(
-		'search-input',
-	) as HTMLInputElement | null;
-	const resultsCount = document.getElementById('results-count');
-	const prevPageBtn = document.getElementById(
-		'prevPage',
-	) as HTMLButtonElement | null;
-	const nextPageBtn = document.getElementById(
-		'nextPage',
-	) as HTMLButtonElement | null;
-	const currentPageEl = document.getElementById('currentPage');
+  console.log("✅ writeups.js loaded!");
 
-	// Check if essential elements exist
-	if (!writeupsList) {
-		console.error('Writeups list element not found');
-		return;
-	}
+  const writeupsList = document.getElementById('writeupsList');
+  const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+  const resultsCount = document.getElementById('results-count');
+  const prevPageBtn = document.getElementById('prevPage') as HTMLButtonElement | null;
+  const nextPageBtn = document.getElementById('nextPage') as HTMLButtonElement | null;
+  const currentPageEl = document.getElementById('currentPage');
+  const categoryDropdown = document.getElementById('sortCategory') as HTMLSelectElement | null;
+  const dateDropdown = document.getElementById('sortDate') as HTMLSelectElement | null;
 
-	let currentPage = 1;
-	const itemsPerPage = 6;
-	let filteredWriteups = [...writeups];
+  if (!writeupsList) {
+    console.error('Writeups list element not found');
+    return;
+  }
 
-	// Render writeups based on current page and filter
-	function renderWriteups() {
-		const startIndex = (currentPage - 1) * itemsPerPage;
-		const endIndex = startIndex + itemsPerPage;
-		const writeupsToRender = filteredWriteups.slice(startIndex, endIndex);
+  // Pagination setup
+  let currentPage = 1;
+  const itemsPerPage = 6;
+  let filteredWriteups = [...writeups];
 
-		if (!writeupsList) return;
+  // Core render
+  function renderWriteups() {
+    const start = (currentPage - 1) * itemsPerPage;
+    const end = start + itemsPerPage;
+    const toRender = filteredWriteups.slice(start, end);
 
-		writeupsList.innerHTML = writeupsToRender
-			.map(
-				(writeup) => `
+    writeupsList.innerHTML = toRender.map(writeup => `
       <div class="writeup-card" data-id="${writeup.id}">
         <h2 class="writeup-title cyber-text">${writeup.title}</h2>
         <p class="writeup-description">${writeup.description}</p>
         <a href="writeups/${writeup.id}.html" class="writeup-link cyber-link">READ_WRITEUP</a>
       </div>
-    `,
-			)
-			.join('');
+    `).join('');
 
-		// Update pagination controls
-		const pageCount = Math.ceil(filteredWriteups.length / itemsPerPage);
+    const pageCount = Math.ceil(filteredWriteups.length / itemsPerPage);
+    if (currentPageEl) currentPageEl.textContent = currentPage.toString();
+    if (prevPageBtn) prevPageBtn.disabled = currentPage === 1;
+    if (nextPageBtn) nextPageBtn.disabled = currentPage === pageCount || pageCount === 0;
+    if (resultsCount) resultsCount.textContent = `${toRender.length} of ${filteredWriteups.length} WRITEUPS DISPLAYED`;
 
-		if (currentPageEl) {
-			currentPageEl.textContent = currentPage.toString();
-		}
+    attachTagAndSortHandlers();
+  }
 
-		if (prevPageBtn) {
-			prevPageBtn.disabled = currentPage === 1;
-		}
-
-		if (nextPageBtn) {
-			nextPageBtn.disabled = currentPage === pageCount || pageCount === 0;
-		}
-
-		// Update results count
-		if (resultsCount) {
-			resultsCount.textContent = `${writeupsToRender.length} of ${filteredWriteups.length} WRITEUPS DISPLAYED`;
-		}
-	}
-
-	// Filter writeups based on search input
-	function filterWriteups() {
-		if (!searchInput) return;
-
-		const searchTerm = searchInput.value.toLowerCase();
-
-		if (searchTerm.trim() === '') {
-			filteredWriteups = [...writeups];
-		} else {
-			filteredWriteups = writeups.filter(
-				(writeup) =>
-					writeup.title.toLowerCase().includes(searchTerm) ||
-					writeup.description.toLowerCase().includes(searchTerm),
-			);
-		}
-
-		currentPage = 1; // Reset to first page when filtering
-		renderWriteups();
-	}
-
-	// Event listeners
-	if (searchInput) {
-		searchInput.addEventListener('input', filterWriteups);
-	}
-
-	if (prevPageBtn) {
-		prevPageBtn.addEventListener('click', () => {
-			if (currentPage > 1) {
-				currentPage--;
-				renderWriteups();
-			}
-		});
-	}
-
-	if (nextPageBtn) {
-		nextPageBtn.addEventListener('click', () => {
-			const pageCount = Math.ceil(filteredWriteups.length / itemsPerPage);
-			if (currentPage < pageCount) {
-				currentPage++;
-				renderWriteups();
-			}
-		});
-	}
-
-	// Initial render
-	renderWriteups();
-});
-
-
-// -----------------------------
-// ✨ Interactive Filtering Logic
-// -----------------------------
-
-document.addEventListener("DOMContentLoaded", () => {
-  const cards = Array.from(document.querySelectorAll(".writeup-card")) as HTMLElement[];
-  const searchInput = document.getElementById("search-input") as HTMLInputElement;
-  const categorySelect = document.getElementById("sortCategory") as HTMLSelectElement;
-  const dateSelect = document.getElementById("sortDate") as HTMLSelectElement;
-  const tags = Array.from(document.querySelectorAll(".tag"));
-  const resultsCount = document.getElementById("results-count");
-
-  // Function to update the visible writeups
-  function updateVisibleCards() {
+  // Apply filtering from search or category
+  function applyFilters() {
     const searchTerm = searchInput?.value.toLowerCase() || "";
-    const selectedCategory = categorySelect?.value.toLowerCase() || "all";
+    const selectedCategory = categoryDropdown?.value.toLowerCase() || "all";
 
-    let visibleCount = 0;
-
-    cards.forEach((card) => {
-      const title = card.querySelector(".writeup-title")?.textContent?.toLowerCase() || "";
-      const desc = card.querySelector(".writeup-description")?.textContent?.toLowerCase() || "";
-
+    filteredWriteups = writeups.filter(w => {
+      const title = w.title.toLowerCase();
+      const desc = w.description.toLowerCase();
       const matchesSearch = title.includes(searchTerm) || desc.includes(searchTerm);
-      const matchesCategory =
-        selectedCategory === "all" ||
-        title.includes(selectedCategory) ||
-        desc.includes(selectedCategory);
-
-      const isVisible = matchesSearch && matchesCategory;
-      card.style.display = isVisible ? "block" : "none";
-      if (isVisible) visibleCount++;
+      const matchesCategory = selectedCategory === "all" || title.includes(selectedCategory) || desc.includes(selectedCategory);
+      return matchesSearch && matchesCategory;
     });
 
-    if (resultsCount) resultsCount.textContent = `(${visibleCount} results)`;
+    currentPage = 1;
+    renderWriteups();
   }
 
-  // Handle search input
-  if (searchInput) {
-    searchInput.addEventListener("input", updateVisibleCards);
-  }
-
-  // Handle category select
-  if (categorySelect) {
-    categorySelect.addEventListener("change", updateVisibleCards);
-  }
-
-  // Handle tag clicks
-  tags.forEach((tag) => {
-    tag.addEventListener("click", () => {
-      const tagValue = tag.getAttribute("data-tag")?.toLowerCase() || "";
-      categorySelect.value = tagValue || "all";
-      updateVisibleCards();
-    });
+  // Event listeners for pagination & search
+  searchInput?.addEventListener('input', applyFilters);
+  prevPageBtn?.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderWriteups(); } });
+  nextPageBtn?.addEventListener('click', () => {
+    const max = Math.ceil(filteredWriteups.length / itemsPerPage);
+    if (currentPage < max) { currentPage++; renderWriteups(); }
   });
 
-  // Handle date sort (placeholder demo)
-  if (dateSelect) {
-    dateSelect.addEventListener("change", () => {
-      const sortOrder = dateSelect.value;
-      const listContainer = document.getElementById("writeupsList");
+  // Sorting dropdown
+  dateDropdown?.addEventListener('change', () => {
+    const order = dateDropdown.value;
+    filteredWriteups.sort((a, b) =>
+      order === "newest"
+        ? b.title.localeCompare(a.title)
+        : a.title.localeCompare(b.title)
+    );
+    renderWriteups();
+  });
 
-      if (!listContainer) return;
-      const sorted = [...cards].sort((a, b) => {
-        const aTitle = a.querySelector(".writeup-title")?.textContent || "";
-        const bTitle = b.querySelector(".writeup-title")?.textContent || "";
+  // 🟢 Tag & category filter hookup
+  function attachTagAndSortHandlers() {
+    const tags = document.querySelectorAll(".tag");
 
-        return sortOrder === "newest"
-          ? bTitle.localeCompare(aTitle)
-          : aTitle.localeCompare(bTitle);
+    tags.forEach(tag => {
+      tag.addEventListener("click", () => {
+        const selected = tag.getAttribute("data-tag")?.toLowerCase() || tag.textContent?.toLowerCase().trim() || "";
+        console.log("Clicked tag:", selected);
+
+        tags.forEach(t => t.classList.remove("active"));
+        tag.classList.add("active");
+
+        if (categoryDropdown) categoryDropdown.value = selected || "all";
+        applyFilters();
       });
-
-      listContainer.innerHTML = "";
-      sorted.forEach((c) => listContainer.appendChild(c));
     });
   }
 
-  // Initial update
-  updateVisibleCards();
+  // Initial render
+  renderWriteups();
 });
