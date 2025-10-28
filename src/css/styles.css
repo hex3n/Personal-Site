@@ -5732,3 +5732,22 @@
 }
 
 
+.tag-btn {
+  background: rgba(255, 0, 40, 0.15);
+  border: 1px solid #ff0044;
+  border-radius: 5px;
+  color: #ff0044;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+.tag-btn:hover {
+  background: #ff0044;
+  color: black;
+  box-shadow: 0 0 15px #ff0044;
+}
+.sort-bar select {
+  cursor: pointer;
+}
+
