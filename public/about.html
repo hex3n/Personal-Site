@@ -524,13 +524,14 @@ import './musicplayer';
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center">
 
       <!-- 🥇 NEW ENTRY FIRST -->
-      <div class="ctf-card neon-flame highlight-winner relative overflow-hidden">
-        <div class="ctf-badge">Raiffeisen Hack or Treat 2025</div>
-        <img src="assets/storage/img/ctf/raiffeisen2025.png" alt="Raiffeisen Hack or Treat 2025" class="ctf-img">
-        <h3>🥇 1st Place Winner</h3>
-        <p>Raiffeisen Bank Albania • Oct 2025</p>
-        <canvas class="flame-canvas"></canvas>
-      </div>
+<div class="ctf-card neon-flame highlight-winner relative overflow-hidden">
+  <div class="ctf-badge">Raiffeisen Hack or Treat 2025</div>
+  <img src="assets/storage/img/ctf/raiffeisen2025.png" alt="Raiffeisen Hack or Treat 2025" class="ctf-img">
+  <h3>🥇 1st Place Winner</h3>
+  <p>Raiffeisen Bank Albania • Oct 2025</p>
+  <canvas class="flame-ring"></canvas>
+</div>
+
 
       <div class="ctf-card">
         <div class="ctf-badge">CSC CTF 2025</div>
@@ -728,50 +729,57 @@ import './musicplayer';
 
 		<script>
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.querySelector(".flame-canvas");
+  const canvas = document.querySelector(".flame-ring");
   if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const w = (canvas.width = canvas.offsetWidth);
-  const h = (canvas.height = canvas.offsetHeight);
-  const particles = [];
 
-  for (let i = 0; i < 50; i++) {
-    particles.push({
-      x: Math.random() * w,
-      y: Math.random() * h,
-      r: 1 + Math.random() * 2,
-      vx: (Math.random() - 0.5) * 0.4,
-      vy: -0.7 - Math.random() * 0.5,
-    });
-  }
+  const ctx = canvas.getContext("2d");
+  const w = (canvas.width = canvas.offsetWidth * 2);
+  const h = (canvas.height = canvas.offsetHeight * 2);
+  ctx.scale(2, 2);
+
+  const cx = canvas.offsetWidth / 2;
+  const cy = canvas.offsetHeight / 2;
+  const baseRadius = Math.min(cx, cy) - 10;
+  let t = 0;
 
   function draw() {
-    ctx.clearRect(0, 0, w, h);
-    particles.forEach((p) => {
-      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 10);
-      grad.addColorStop(0, "rgba(0,255,120,0.8)");
-      grad.addColorStop(0.5, "rgba(0,255,100,0.4)");
-      grad.addColorStop(1, "rgba(0,255,0,0)");
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r * 10, 0, Math.PI * 2);
-      ctx.fill();
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      p.x += p.vx;
-      p.y += p.vy;
-      p.r *= 0.995;
-      if (p.y < 0 || p.r < 0.5) {
-        p.x = Math.random() * w;
-        p.y = h + 10;
-        p.r = 1 + Math.random() * 2;
-      }
-    });
+    const segments = 180; // how many flame points around the circle
+    const flameIntensity = 6; // size of waves
+    const flameSpeed = 0.04; // speed of motion
+
+    ctx.beginPath();
+    for (let i = 0; i <= segments; i++) {
+      const angle = (i / segments) * Math.PI * 2;
+      const wave = Math.sin(i * 0.3 + t) * flameIntensity;
+      const r = baseRadius + wave;
+      const x = cx + Math.cos(angle) * r;
+      const y = cy + Math.sin(angle) * r;
+      if (i === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+
+    const grad = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+    grad.addColorStop(0, "rgba(255, 100, 0, 0.8)");
+    grad.addColorStop(0.5, "rgba(255, 0, 0, 0.9)");
+    grad.addColorStop(1, "rgba(255, 150, 50, 0.7)");
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 3;
+    ctx.shadowBlur = 15;
+    ctx.shadowColor = "#ff2a00";
+    ctx.stroke();
+
+    t += flameSpeed;
     requestAnimationFrame(draw);
   }
 
   draw();
 });
 </script>
+
 
 	</body>
 </html>
