@@ -511,19 +511,27 @@ import './musicplayer';
 <section class="ctf-section py-20 relative">
   <div class="container mx-auto px-4 text-center">
     <div class="section-header mb-12">
-<h2 class="section-title text-4xl font-bold text-center crosshair-title">
-  <span class="glow-text" data-text="CTF'S PWNED">CTF'S PWNED</span>
-  <span class="crosshair-container">
-    <span class="crosshair"></span>
-    <span class="bullet-impact"></span>
-  </span>
-</h2>
-
-
+      <h2 class="section-title text-4xl font-bold text-center crosshair-title">
+        <span class="glow-text" data-text="CTF'S PWNED">CTF'S PWNED</span>
+        <span class="crosshair-container">
+          <span class="crosshair"></span>
+          <span class="bullet-impact"></span>
+        </span>
+      </h2>
       <div class="section-divider"></div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center">
+
+      <!-- 🥇 NEW ENTRY FIRST -->
+      <div class="ctf-card neon-flame highlight-winner relative overflow-hidden">
+        <div class="ctf-badge">Raiffeisen Hack or Treat 2025</div>
+        <img src="assets/storage/img/ctf/raiffeisen2025.png" alt="Raiffeisen Hack or Treat 2025" class="ctf-img">
+        <h3>🥇 1st Place Winner</h3>
+        <p>Raiffeisen Bank Albania • Oct 2025</p>
+        <canvas class="flame-canvas"></canvas>
+      </div>
+
       <div class="ctf-card">
         <div class="ctf-badge">CSC CTF 2025</div>
         <img src="assets/storage/img/ctf/cscctf2025.png" alt="CSC CTF 2025" class="ctf-img">
@@ -553,16 +561,18 @@ import './musicplayer';
       </div>
 
       <div class="ctf-card">
-        <div class="ctf-badge">Raiffeisen CTF</div>
+        <div class="ctf-badge">Raiffeisen CTF 2024</div>
         <img src="assets/storage/img/ctf/raiffeisen2024.png" alt="Raiffeisen Bank" class="ctf-img">
         <h3>4th Place Participant</h3>
         <p>Raiffeisen Bank Albania • Oct 2024</p>
       </div>
+
     </div>
 
     <p class="text-gray-500 mt-16 text-lg italic">...and more</p>
   </div>
 </section>
+
 
 
 
@@ -716,6 +726,52 @@ import './musicplayer';
 		<script type="module" src="./assets/js/index.js"></script>
 		<script type="module" src="assets/js/menu.js" defer></script>
 
-		
+		<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const canvas = document.querySelector(".flame-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const w = (canvas.width = canvas.offsetWidth);
+  const h = (canvas.height = canvas.offsetHeight);
+  const particles = [];
+
+  for (let i = 0; i < 50; i++) {
+    particles.push({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: 1 + Math.random() * 2,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: -0.7 - Math.random() * 0.5,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, w, h);
+    particles.forEach((p) => {
+      const grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 10);
+      grad.addColorStop(0, "rgba(0,255,120,0.8)");
+      grad.addColorStop(0.5, "rgba(0,255,100,0.4)");
+      grad.addColorStop(1, "rgba(0,255,0,0)");
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r * 10, 0, Math.PI * 2);
+      ctx.fill();
+
+      p.x += p.vx;
+      p.y += p.vy;
+      p.r *= 0.995;
+      if (p.y < 0 || p.r < 0.5) {
+        p.x = Math.random() * w;
+        p.y = h + 10;
+        p.r = 1 + Math.random() * 2;
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+
+  draw();
+});
+</script>
+
 	</body>
 </html>
