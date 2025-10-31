@@ -729,66 +729,77 @@ import './musicplayer';
 
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-  const canvas = document.querySelector(".flame-ring");
+  const canvas = document.querySelector(".fire-border-canvas");
   if (!canvas) return;
   const ctx = canvas.getContext("2d", { alpha: true });
-  let width, height, cx, cy, baseR;
-  const particles = [];
-  const COUNT = 280; // number of flame particles
-  const TAU = Math.PI * 2;
 
+  let w, h;
   function resize() {
-    width = canvas.offsetWidth;
-    height = canvas.offsetHeight;
-    canvas.width = width;
-    canvas.height = height;
-    cx = width / 2;
-    cy = height / 2;
-    baseR = Math.min(width, height) / 2.2;
+    w = canvas.offsetWidth;
+    h = canvas.offsetHeight;
+    canvas.width = w;
+    canvas.height = h;
   }
   window.addEventListener("resize", resize);
   resize();
 
+  const particles = [];
+  const NUM = 400;
+  const edges = [
+    (t) => [t, 0],
+    (t) => [w, t],
+    (t) => [w - t, h],
+    (t) => [0, h - t]
+  ];
+
   class Particle {
-    constructor(angle) {
-      this.a = angle;
-      this.r = baseR + Math.random() * 5 - 2.5;
-      this.speed = 0.002 + Math.random() * 0.003;
-      this.size = 1 + Math.random() * 2;
-      this.hue = 20 + Math.random() * 20; // orange-red
-      this.life = 0;
-      this.alpha = 0.7 + Math.random() * 0.3;
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      const edge = Math.floor(Math.random() * 4);
+      const pos = Math.random();
+      const [x, y] = edges[edge](pos * (edge % 2 === 0 ? w : h));
+      this.x = x + (Math.random() - 0.5) * 4;
+      this.y = y + (Math.random() - 0.5) * 4;
+      this.vx = (Math.random() - 0.5) * 0.5;
+      this.vy = (Math.random() - 0.5) * 0.5;
+      this.life = Math.random() * 100;
+      this.maxLife = 120 + Math.random() * 80;
+      this.size = 1.5 + Math.random() * 1.5;
+      this.hue = 10 + Math.random() * 30;
     }
     update() {
-      this.a += this.speed;
-      this.life += 0.015;
-      const jitter = Math.sin(this.life * 10 + this.a * 15) * 2;
-      this.r = baseR + Math.sin(this.life * 4 + this.a * 5) * 6 + jitter;
-      const x = cx + Math.cos(this.a) * this.r;
-      const y = cy + Math.sin(this.a) * this.r;
-      const fade = 0.5 + Math.sin(this.life * 3) * 0.5;
-      ctx.beginPath();
-      const grad = ctx.createRadialGradient(x, y, 0, x, y, this.size * 8);
-      grad.addColorStop(0, `hsla(${this.hue},100%,60%,${this.alpha})`);
-      grad.addColorStop(0.4, `hsla(${this.hue+20},100%,40%,${this.alpha*0.6})`);
-      grad.addColorStop(1, `hsla(${this.hue+40},100%,20%,0)`);
+      this.x += this.vx + (Math.random() - 0.5) * 0.4;
+      this.y += this.vy + (Math.random() - 0.5) * 0.4;
+      this.life++;
+      if (this.life > this.maxLife) this.reset();
+    }
+    draw() {
+      const alpha = 1 - this.life / this.maxLife;
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 10);
+      grad.addColorStop(0, `hsla(${this.hue},100%,60%,${alpha})`);
+      grad.addColorStop(0.3, `hsla(${this.hue+20},100%,50%,${alpha*0.7})`);
+      grad.addColorStop(1, `hsla(${this.hue+40},100%,30%,0)`);
       ctx.fillStyle = grad;
-      ctx.arc(x, y, this.size * (1 + fade), 0, TAU);
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * 10, 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  for (let i = 0; i < COUNT; i++) {
-    particles.push(new Particle((i / COUNT) * TAU));
-  }
+  for (let i = 0; i < NUM; i++) particles.push(new Particle());
 
-  function animate() {
+  function loop() {
     ctx.globalCompositeOperation = "lighter";
-    ctx.clearRect(0, 0, width, height);
-    for (const p of particles) p.update();
-    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, w, h);
+    for (const p of particles) {
+      p.update();
+      p.draw();
+    }
+    requestAnimationFrame(loop);
   }
-  animate();
+  loop();
 });
 </script>
 
