@@ -523,14 +523,15 @@ import './musicplayer';
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 justify-center">
 
-      <!-- 🥇 NEW ENTRY FIRST -->
-<div class="ctf-card neon-flame highlight-winner relative overflow-hidden">
+<!-- 🔥 Raiffeisen Hack or Treat 2025 -->
+<div class="ctf-card fire-border relative overflow-hidden">
   <div class="ctf-badge">Raiffeisen Hack or Treat 2025</div>
-  <img src="assets/storage/img/ctf/raiffeisen2024.png" alt="Raiffeisen Hack or Treat 2025" class="ctf-img">
-  <h2>🥇 1st Place Winner</h2>
+  <img src="assets/storage/img/ctf/raiffeisen2025.png" alt="Raiffeisen Hack or Treat 2025" class="ctf-img">
+  <h3>🥇 1st Place Winner</h3>
   <p>Raiffeisen Bank Albania • Oct 2025</p>
-  <canvas class="flame-ring"></canvas>
+  <canvas class="fire-border-canvas"></canvas>
 </div>
+
 
 
       <div class="ctf-card">
@@ -726,7 +727,6 @@ import './musicplayer';
 
 		<script type="module" src="./assets/js/index.js"></script>
 		<script type="module" src="assets/js/menu.js" defer></script>
-
 <script>
 document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.querySelector(".fire-border-canvas");
@@ -744,7 +744,7 @@ document.addEventListener("DOMContentLoaded", () => {
   resize();
 
   const particles = [];
-  const NUM = 400;
+  const NUM = 500;
   const edges = [
     (t) => [t, 0],
     (t) => [w, t],
@@ -760,14 +760,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const edge = Math.floor(Math.random() * 4);
       const pos = Math.random();
       const [x, y] = edges[edge](pos * (edge % 2 === 0 ? w : h));
-      this.x = x + (Math.random() - 0.5) * 4;
-      this.y = y + (Math.random() - 0.5) * 4;
-      this.vx = (Math.random() - 0.5) * 0.5;
-      this.vy = (Math.random() - 0.5) * 0.5;
+      this.x = x;
+      this.y = y;
+      this.vx = (Math.random() - 0.5) * 0.8;
+      this.vy = (Math.random() - 0.5) * 0.8;
       this.life = Math.random() * 100;
-      this.maxLife = 120 + Math.random() * 80;
-      this.size = 1.5 + Math.random() * 1.5;
-      this.hue = 10 + Math.random() * 30;
+      this.maxLife = 100 + Math.random() * 60;
+      this.size = 2 + Math.random() * 2;
+      this.hue = 10 + Math.random() * 25;
     }
     update() {
       this.x += this.vx + (Math.random() - 0.5) * 0.4;
@@ -777,13 +777,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     draw() {
       const alpha = 1 - this.life / this.maxLife;
-      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 10);
+      const grad = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 8);
       grad.addColorStop(0, `hsla(${this.hue},100%,60%,${alpha})`);
-      grad.addColorStop(0.3, `hsla(${this.hue+20},100%,50%,${alpha*0.7})`);
+      grad.addColorStop(0.5, `hsla(${this.hue+20},100%,50%,${alpha*0.7})`);
       grad.addColorStop(1, `hsla(${this.hue+40},100%,30%,0)`);
       ctx.fillStyle = grad;
       ctx.beginPath();
-      ctx.arc(this.x, this.y, this.size * 10, 0, Math.PI * 2);
+      ctx.arc(this.x, this.y, this.size * 8, 0, Math.PI * 2);
       ctx.fill();
     }
   }
@@ -802,8 +802,6 @@ document.addEventListener("DOMContentLoaded", () => {
   loop();
 });
 </script>
-
-
 
 	</body>
 </html>
