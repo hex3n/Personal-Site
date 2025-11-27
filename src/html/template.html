@@ -105,7 +105,31 @@ import './musicplayer';
 		</nav>
 
 		<main class="relative z-10 pt-20">
-			<article class="markdown-body">${content}</article>
+			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
+  <div class="filter-container mb-6">
+    <input
+      type="text"
+      id="search-input"
+      placeholder="🔍 Search writeups..."
+      class="bg-black border border-neongreen text-neongreen rounded-md px-4 py-2 w-64 focus:outline-none focus:ring-2 focus:ring-neonpink"
+    />
+    <select
+      id="sort-select"
+      class="bg-black border border-neonblue text-neonblue rounded-md px-4 py-2 ml-4"
+    >
+      <option value="default">Sort by...</option>
+      <option value="title">Title (A–Z)</option>
+      <option value="date">Date (Newest)</option>
+    </select>
+  </div>
+
+  <div id="tag-container" class="flex flex-wrap justify-center gap-2 mb-6">
+    <!-- Tags auto-filled by JS -->
+  </div>
+</section>
+
+<!-- Writeup content -->
+<article class="markdown-body">${content}</article>
 
 			<!-- Footer -->
 			<footer
@@ -149,5 +173,72 @@ import './musicplayer';
 			</footer>
 		</main>
 		<script type="module" src="../assets/js/menu.js" defer></script>
+
+		<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const searchInput = document.getElementById("search-input");
+  const sortSelect = document.getElementById("sort-select");
+  const tagContainer = document.getElementById("tag-container");
+  const writeupSections = document.querySelectorAll("article .section, article h2, article h3, article p");
+
+  // Collect tags from meta if present
+  const metaTags = document.querySelector('meta[name="tags"]');
+  let tags = [];
+  if (metaTags && metaTags.content) {
+    tags = metaTags.content.split(",").map(t => t.trim());
+  } else {
+    // fallback (autodetect by scanning headings)
+    document.querySelectorAll("article h2, article h3").forEach(h => {
+      if (!tags.includes(h.textContent)) tags.push(h.textContent);
+    });
+  }
+
+  // Create tag buttons
+  tags.forEach(tag => {
+    const btn = document.createElement("button");
+    btn.textContent = tag;
+    btn.className =
+      "tag-btn border border-neongreen text-neongreen px-3 py-1 rounded-md hover:bg-neongreen hover:text-black transition-all";
+    btn.addEventListener("click", () => filterByTag(tag));
+    tagContainer.appendChild(btn);
+  });
+
+  // 🔍 Search
+  searchInput.addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase();
+    writeupSections.forEach(el => {
+      el.style.display = el.textContent.toLowerCase().includes(query) ? "" : "none";
+    });
+  });
+
+  // 🔖 Sort (basic alphabetical or newest first if meta exists)
+  sortSelect.addEventListener("change", (e) => {
+    const value = e.target.value;
+    const container = document.querySelector("article.markdown-body");
+    const items = Array.from(container.children);
+
+    if (value === "title") {
+      items.sort((a, b) => a.textContent.localeCompare(b.textContent));
+    } else if (value === "date") {
+      items.sort((a, b) => {
+        const da = new Date(a.getAttribute("data-date") || 0);
+        const db = new Date(b.getAttribute("data-date") || 0);
+        return db - da;
+      });
+    }
+
+    items.forEach(item => container.appendChild(item));
+  });
+
+  // 🏷️ Filter by tag
+  function filterByTag(tag) {
+    writeupSections.forEach(el => {
+      const match = el.textContent.toLowerCase().includes(tag.toLowerCase());
+      el.style.display = match ? "" : "none";
+    });
+  }
+});
+</script>
+
 	</body>
 </html>

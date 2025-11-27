@@ -157,38 +157,51 @@ progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
 	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
 });
 
-// === INITIALIZATION ===
-document.addEventListener("DOMContentLoaded", async () => {
-	try {
-		updateToggleStyles();
-		winampAudio.volume = 0.4;
+// === FINAL AUTOPLAY LOGIC (No click needed if autoplay allowed) ===
+window.addEventListener("load", async () => {
+	updateToggleStyles();
+	shuffle.val = true;
+	const randomTrack = nextTrack();
+	playSong(randomTrack);
+	winampTrackName.innerHTML = currTrackName();
 
-		shuffle.val = true;
-		const randomTrack = nextTrack();
-		playSong(randomTrack);
-		winampTrackName.innerHTML = currTrackName();
+	winampAudio.volume = 0.4; // normal volume by default
 
-		await audioCtx.resume();
-		await winampAudio.play();
+	const tryAutoplay = async () => {
+		try {
+			// try to init and play immediately
+			initAudio();
+			await audioCtx!.resume();
+			await winampAudio.play();
+			console.info("🎶 Autoplay started successfully");
+			localStorage.setItem("audioUnlocked", "true");
+			return true;
+		} catch (err) {
+			console.warn("⚠️ Autoplay blocked, waiting for interaction");
+			return false;
+		}
+	};
 
-		console.info("🎵 Music player started automatically.");
+	const autoplayWorked = await tryAutoplay();
 
-		winampAudio.addEventListener("ended", () => {
-			const next = nextTrack();
-			playSong(next);
-			winampTrackName.innerHTML = currTrackName();
-		});
-	} catch (err) {
-		console.warn("⚠️ Autoplay blocked by browser; waiting for click.");
-		const resumePlayback = () => {
-			audioCtx.resume();
-			winampAudio.play();
-			document.removeEventListener("click", resumePlayback);
-			console.info("▶️ Music resumed after user interaction.");
+	// Fallback: if autoplay blocked, wait for interaction once
+	if (!autoplayWorked) {
+		const unlockAudio = async () => {
+			initAudio();
+			await audioCtx!.resume();
+			await winampAudio.play();
+			console.info("▶️ Audio unlocked by user interaction");
+			document.removeEventListener("click", unlockAudio);
+			document.removeEventListener("scroll", unlockAudio);
+			document.removeEventListener("keydown", unlockAudio);
 		};
-		document.addEventListener("click", resumePlayback);
+		document.addEventListener("click", unlockAudio);
+		document.addEventListener("scroll", unlockAudio);
+		document.addEventListener("keydown", unlockAudio);
 	}
 });
+
+
 
 // Time display
 const currentTimeEl = document.getElementById('current-time')!;
@@ -226,3 +239,5 @@ winampTrigger.onclick = () => (open ? closeMusicPlayer() : openMusicPlayer());
 
 // Make draggable
 makeDraggable(winampWindow);
+
+

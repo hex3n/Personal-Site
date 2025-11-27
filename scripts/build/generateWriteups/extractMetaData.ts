@@ -154,6 +154,7 @@ interface Metadata {
 	id: string;
 	title: string;
 	description: string;
+	tag: string;
 }
 
 function extractMetadataFromMd(mdContent: string, filename: string): Metadata {
@@ -164,6 +165,7 @@ function extractMetadataFromMd(mdContent: string, filename: string): Metadata {
 		id: path.basename(filename, '.md'),
 		title: path.basename(filename, '.md').replace(/[-_]/g, ' '), // Convert filename to title
 		description: '',
+		tag: ''
 	};
 
 	// Extract title from first H1 (#) heading
