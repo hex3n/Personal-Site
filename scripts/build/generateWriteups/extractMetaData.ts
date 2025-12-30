@@ -160,12 +160,19 @@ interface Metadata {
 function extractMetadataFromMd(mdContent: string, filename: string): Metadata {
 	mdContent = stripFrontmatter(mdContent);
 
-	// Default metadata
+	const baseName = path.basename(filename, '.md');
+	const parts = baseName.split('.');
+
+	const titlePart = parts[0];
+	const tagParts = parts.slice(1);
+
+	if (!titlePart) throw new Error('No title for md file');
+
 	let metadata: Metadata = {
-		id: path.basename(filename, '.md'),
-		title: path.basename(filename, '.md').replace(/[-_]/g, ' '), // Convert filename to title
+		id: titlePart,
+		title: titlePart.replace(/[-_]/g, ' '),
 		description: '',
-		tag: ''
+		tag: tagParts.join(', '),
 	};
 
 	// Extract title from first H1 (#) heading

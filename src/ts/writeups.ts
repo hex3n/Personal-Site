@@ -8,70 +8,28 @@ interface Writeup {
 // AUTO-GENERATED-WRITEUPS-START
 const writeups: Writeup[] = [
   {
+    "id": "xss_writeup_2",
+    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
+    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "tag": "sqli, mysql"
+  },
+  {
+    "id": "xss_writeup_1",
+    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
+    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
+    "tag": "xss, js"
+  },
+  {
     "id": "input",
     "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
     "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
     "tag": ""
   },
   {
-    "id": "xss_writeup_7",
-    "title": "Penetration Testing Writeup: XSS in Chat Feature",
-    "description": "A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s chat feature during a penetration test. This flaw allows attackers to inject scripts into chat messages, affecting all users in the chat.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_4",
-    "title": "Penetration Testing Writeup: XSS in URL Parameter",
-    "description": "A penetration test on [Target Application] revealed a Reflected Cross-Site Scripting (XSS) vulnerability in a URL parameter. This flaw allows attackers to inject scripts that execute in users’ browsers, posing risks like session hijacking and data theft.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_9",
-    "title": "Penetration Testing Writeup: XSS in Feedback Form",
-    "description": "A Reflected Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s feedback form during a penetration test. This allows attackers to inject scripts that execute in the response, risking user security.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_3",
-    "title": "Penetration Testing Writeup: Reflected XSS in Form Input",
-    "description": "A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s form submission process during a penetration test. This vulnerability allows attackers to inject malicious scripts via form inputs, which are reflected in the response, compromising user security.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_5",
-    "title": "Penetration Testing Writeup: XSS in User Profile",
-    "description": "A Stored Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s user profile editing feature during a penetration test. This flaw allows attackers to inject scripts that execute for users viewing the profile, risking data theft and account compromise.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_8",
-    "title": "Penetration Testing Writeup: XSS in File Upload",
-    "description": "A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s file upload feature, allowing attackers to embed scripts in uploaded file metadata. This report details the vulnerability and remediation steps.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
-    "tag": ""
-  },
-  {
     "id": "xss_writeup_10",
     "title": "Penetration Testing Writeup: XSS in Admin Panel",
     "description": "A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_6",
-    "title": "Penetration Testing Writeup: XSS in Search Autocomplete",
-    "description": "A Reflected Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s search autocomplete feature during a penetration test. This allows attackers to inject scripts via the autocomplete query, compromising user security.",
-    "tag": ""
-  },
-  {
-    "id": "xss_writeup_1",
-    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
-    "tag": ""
+    "tag": "php, web"
   }
 ];
 // AUTO-GENERATED-WRITEUPS-END
