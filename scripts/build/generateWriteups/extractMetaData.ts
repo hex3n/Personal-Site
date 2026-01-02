@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { inputDir, jsonOutput } from './config';
+import { inputDir, jsonWriteupsOutput, jsonTagsOutput } from './config';
 
 function stripFrontmatter(md: string): string {
 	// Remove leading YAML frontmatter if present
@@ -154,25 +154,37 @@ interface Metadata {
 	id: string;
 	title: string;
 	description: string;
-	tag: string;
+	tags: string[];
+}
+
+function extractTitleAndTagsFromMd(filename: string): {
+	title: string;
+	tags: string[];
+} {
+	const baseName = path.basename(filename, '.md');
+	const parts = baseName.split('.');
+
+	const title = parts[0];
+	const tags = parts.slice(1);
+
+	if (!title) throw new Error('No title for filename');
+
+	return { title, tags };
 }
 
 function extractMetadataFromMd(mdContent: string, filename: string): Metadata {
 	mdContent = stripFrontmatter(mdContent);
 
-	const baseName = path.basename(filename, '.md');
-	const parts = baseName.split('.');
+	const { title: titlePart, tags: tagParts } =
+		extractTitleAndTagsFromMd(filename);
 
-	const titlePart = parts[0];
-	const tagParts = parts.slice(1);
-
-	if (!titlePart) throw new Error('No title for md file');
+	const title = titlePart.replace(/[-_]/g, ' ');
 
 	let metadata: Metadata = {
 		id: titlePart,
-		title: titlePart.replace(/[-_]/g, ' '),
+		title,
 		description: '',
-		tag: tagParts.join(', '),
+		tags: tagParts,
 	};
 
 	// Extract title from first H1 (#) heading
@@ -224,7 +236,8 @@ function extractMetadataFromMd(mdContent: string, filename: string): Metadata {
 }
 
 export const extractMetaData = async () => {
-	const outputFile = jsonOutput;
+	const writeupsOutputFile = jsonWriteupsOutput;
+	const tagsOutputFile = jsonTagsOutput;
 
 	// Get all .md files in the input directory
 	const files = fs
@@ -238,6 +251,8 @@ export const extractMetaData = async () => {
 
 	console.log(`Found ${files.length} .md files to process...`);
 
+	const tags: Set<string> = new Set<string>();
+
 	// Process each file and extract metadata
 	const metadataArray: Metadata[] = files
 		.map((file) => {
@@ -246,6 +261,8 @@ export const extractMetaData = async () => {
 				const mdContent = fs.readFileSync(inputPath, 'utf8');
 
 				const metadata = extractMetadataFromMd(mdContent, file);
+				const fileTags = metadata.tags;
+				fileTags.filter(Boolean).forEach((tag) => tags.add(tag.toLowerCase()));
 				console.log(`✓ Extracted: ${file}`);
 
 				return metadata;
@@ -266,9 +283,13 @@ export const extractMetaData = async () => {
 				item !== null && typeof item === 'object' && 'id' in item,
 		);
 
+	const tagsArray = Array.from(tags);
+
 	// Write the metadata to JSON file
-	fs.writeFileSync(outputFile, JSON.stringify(metadataArray, null, 2));
-	console.log(`\n✅ Metadata saved to ${outputFile}`);
+	fs.writeFileSync(writeupsOutputFile, JSON.stringify(metadataArray, null, 2));
+	console.log(`\n✅ Metadata saved to ${writeupsOutputFile}`);
+	fs.writeFileSync(tagsOutputFile, JSON.stringify(tagsArray, null, 2));
+	console.log(`\n✅ Tags saved to ${tagsOutputFile}`);
 
 	// Also update the TypeScript file for writeups
 	const tsOutputPath = path.join(process.cwd(), 'src', 'ts', 'writeups.ts');
@@ -289,6 +310,23 @@ export const extractMetaData = async () => {
 		fs.writeFileSync(tsOutputPath, tsContent);
 
 		console.log(`✅ TypeScript writeups array updated in ${tsOutputPath}`);
+
+		const tagsStartMarker = '// AUTO-GENERATED-TAGS-START';
+		const tagsEndMarker = '// AUTO-GENERATED-TAGS-END';
+
+		const tagsArrayContent = `const tags: string[] = ${JSON.stringify(tagsArray, null, 2)};`;
+
+		const tagsRegex = new RegExp(
+			`${tagsStartMarker}[\\s\\S]*?${tagsEndMarker}`,
+			'g',
+		);
+
+		const tagsReplacement = `${tagsStartMarker}\n${tagsArrayContent}\n${tagsEndMarker}`;
+
+		tsContent = tsContent.replace(tagsRegex, tagsReplacement);
+		fs.writeFileSync(tsOutputPath, tsContent);
+
+		console.log(`✅ TypeScript tags array updated in ${tsOutputPath}`);
 	} else {
 		console.warn(`⚠️  TypeScript writeups file not found at: ${tsOutputPath}`);
 	}

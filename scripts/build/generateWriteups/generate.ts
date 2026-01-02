@@ -21,13 +21,17 @@ export const generate = async () => {
 
 	files.forEach(async (file) => {
 		const inputPath = join(inputDir, file);
-		const outputPath = join(writeupsDir, basename(file, '.md') + '.html');
+		const outputPath = join(
+			writeupsDir,
+			basename(file, '.md').split('.')[0] + '.html',
+		);
 
 		const mdContent = readFileSync(inputPath, 'utf8');
 		const htmlContent = await marked.parse(mdContent);
-
-		// Replace placeholder in template with HTML content
-		const finalHtml = template.replace('${content}', htmlContent);
+		const finalHtml = template
+			.replace(/<div class="filter-container[\s\S]*?<\/div>/g, '')
+			.replace('${content}', htmlContent)
+			.replace('${tags}', '');
 
 		writeFile(outputPath, finalHtml, () => {
 			console.log(`✅ Converted ${file} → ${outputPath}`);

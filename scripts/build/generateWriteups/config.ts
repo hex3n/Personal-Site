@@ -1,4 +1,5 @@
 export const inputDir = 'src/md';
 export const textOutput = './out/writeups/';
-export const jsonOutput = './out/writeups.json';
+export const jsonWriteupsOutput = './out/writeups.json';
+export const jsonTagsOutput = './out/tags.json';
 export const writeupsDir = './public/writeups';

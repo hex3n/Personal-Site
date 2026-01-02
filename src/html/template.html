@@ -1,7 +1,3 @@
-import './musicplayer';
-
-
-
 <!doctype html>
 <html lang="en">
 	<head>
@@ -106,13 +102,17 @@ import './musicplayer';
 
 		<main class="relative z-10 pt-20">
 			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
-  <div class="filter-container mb-6 w-full">
+  <div class="filter-container mb-6 w-full" >
     <input
       type="text"
       id="search-input"
       placeholder="Search writeups..."
       class="bg-black border border-neongreen text-neongreen rounded-md px-4 py-2 max-w-1/2 focus:outline-none focus:ring-2 focus:ring-neonpink"
     />
+  </div>
+
+  <div id='tags-container'>
+    ${tags}
   </div>
 </section>
 
