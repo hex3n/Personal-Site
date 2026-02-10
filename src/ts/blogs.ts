@@ -1,47 +1,22 @@
-interface Writeup {
+interface Blog {
 	id: string;
 	title: string;
 	description: string;
 	tags: string[];
 }
 
-// AUTO-GENERATED-WRITEUPS-START
-const writeups: Writeup[] = [
+// AUTO-GENERATED-BLOGS-START
+const blogs: Blog[] = [
   {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "id": "first_blog",
+    "title": "Building This Portfolio Site",
+    "description": "This blog post explains how the build pipeline turns markdown into static HTML pages. It mirrors the writeup system and is used as a sample blog entry.",
     "tags": [
-      "sqli",
-      "mysql"
-    ]
-  },
-  {
-    "id": "input",
-    "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
-    "tags": []
-  },
-  {
-    "id": "xss_writeup_10",
-    "title": "Penetration Testing Writeup: XSS in Admin Panel",
-    "description": "A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.",
-    "tags": [
-      "php",
       "web"
-    ]
-  },
-  {
-    "id": "xss_writeup_1",
-    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
-    "tags": [
-      "xss",
-      "js"
     ]
   }
 ];
-// AUTO-GENERATED-WRITEUPS-END
+// AUTO-GENERATED-BLOGS-END
 
 document.addEventListener('DOMContentLoaded', function () {
 	const writeupsList = document.getElementById('writeupsList');
@@ -62,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	) as HTMLSelectElement | null;
 
 	if (!writeupsList) {
-		console.error('Writeups list element not found');
+		console.error('Blogs list element not found');
 		return;
 	}
 	if (!tagsContainer) {
@@ -75,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
 	// Pagination setup
 	let currentPage = 1;
 	const itemsPerPage = 6;
-	let filteredWriteups = [...writeups];
+	let filteredWriteups = [...blogs];
 	const selectedTags = new Set<string>();
 
 	// Core render
@@ -96,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
         <h2 class="writeup-title cyber-text">${writeup.title}</h2>
         <p class="writeup-description">${writeup.description}</p>
 
-        <a href="writeups/${writeup.id}.html" class="writeup-link cyber-link">READ_WRITEUP</a>
+        <a href="blogs/${writeup.id}.html" class="writeup-link cyber-link">READ_BLOG</a>
         ${tagsHtml ? `<div class="writeup-tags mt-4">${tagsHtml}</div>` : ''}
       </div>
     `;
@@ -109,14 +84,14 @@ document.addEventListener('DOMContentLoaded', function () {
 		if (nextPageBtn)
 			nextPageBtn.disabled = currentPage === pageCount || pageCount === 0;
 		if (resultsCount)
-			resultsCount.textContent = `${toRender.length} of ${filteredWriteups.length} WRITEUPS DISPLAYED`;
+			resultsCount.textContent = `${toRender.length} of ${filteredWriteups.length} BLOGS DISPLAYED`;
 	}
 
 	// Apply filtering from search or category
 	function applyFilters() {
 		console.log('Applying...');
 		const searchTerm = searchInput?.value.toLowerCase() || '';
-		filteredWriteups = writeups.filter((w) => {
+		filteredWriteups = blogs.filter((w) => {
 			const title = w.title.toLowerCase();
 			const desc = w.description.toLowerCase();
 
