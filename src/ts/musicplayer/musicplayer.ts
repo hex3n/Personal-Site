@@ -15,7 +15,6 @@ import {
 } from './playerParts';
 
 import {
-	currTrack,
 	currTrackName,
 	nextTrack,
 	prevTrack,
@@ -32,6 +31,12 @@ const analyser = audioCtx.createAnalyser();
 const bufferLength = analyser.frequencyBinCount;
 const dataArray = new Uint8Array(bufferLength);
 const prevHeights = new Float32Array(BAR_COUNT);
+
+function initAudio() {
+	if (audioCtx.state === 'suspended') {
+		void audioCtx.resume();
+	}
+}
 
 // Setup analyzer
 analyser.fftSize = 2048;
@@ -154,7 +159,8 @@ progressContainer.addEventListener('mousemove', (e: MouseEvent) => {
 	if (isSeeking) seekAudio(e.clientX);
 });
 progressContainer.addEventListener('touchmove', (e: TouchEvent) => {
-	if (isSeeking && e.touches.length > 0) seekAudio(e.touches[0].clientX);
+	const firstTouch = e.touches.item(0);
+	if (isSeeking && firstTouch) seekAudio(firstTouch.clientX);
 });
 
 // === FINAL AUTOPLAY LOGIC (No click needed if autoplay allowed) ===
@@ -239,5 +245,4 @@ winampTrigger.onclick = () => (open ? closeMusicPlayer() : openMusicPlayer());
 
 // Make draggable
 makeDraggable(winampWindow);
-
 
