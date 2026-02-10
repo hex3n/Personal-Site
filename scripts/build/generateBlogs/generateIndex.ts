@@ -89,6 +89,10 @@ export async function generateBlogsIndex() {
           BLOG_POSTS
         </h1>
 
+        <div class="text-center mt-4">
+          <a href="writeups.html" class="writeup-link cyber-link">VIEW_WRITEUPS</a>
+        </div>
+
         <div id="writeupsList" class="writeups-grid">
           ${blogsHtml}
         </div>
@@ -116,7 +120,7 @@ export async function generateBlogsIndex() {
 				`		<link rel="stylesheet" href="assets/css/writeups.css" />`,
 			)
 			.replace(
-				/<a href="\.\.\/(index\.html|about\.html|writeups\.html)" class="nav-link">(HOME|ABOUT|WRITEUPS)<\/a>/g,
+				/<a href="\.\.\/(index\.html|about\.html|writeups\.html|blogs\.html)" class="nav-link">(HOME|ABOUT|WRITEUPS|BLOGS)<\/a>/g,
 				(_match, p1, p2) => `<a href="${p1}" class="nav-link">${p2}</a>`,
 			)
 			.replace(
