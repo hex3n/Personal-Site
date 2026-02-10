@@ -1,64 +1,59 @@
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
-console.log('🚧 Using streamlined writeups index generator...');
+console.log('🚧 Using streamlined blogs index generator...');
 
-interface Writeup {
+interface Blog {
 	id: string;
 	title: string;
 	description: string;
 	tags: string[];
 }
 
-// Configuration
-const writeupsJsonPath = join(process.cwd(), 'out', 'writeups.json');
-const tagsJsonPath = join(process.cwd(), 'out', 'tags.json');
-const outputPath = join(process.cwd(), 'public', 'writeups.html');
+const blogsJsonPath = join(process.cwd(), 'out', 'blogs.json');
+const tagsJsonPath = join(process.cwd(), 'out', 'blog-tags.json');
+const outputPath = join(process.cwd(), 'public', 'blogs.html');
 const templatePath = join(process.cwd(), 'src', 'html', 'template.html');
 
-export async function generateWriteupsIndex() {
+export async function generateBlogsIndex() {
 	try {
-		// ✅ Check if writeups.json exists
-		if (!existsSync(writeupsJsonPath)) {
-			console.error(`❌ writeups.json not found at: ${writeupsJsonPath}`);
+		if (!existsSync(blogsJsonPath)) {
+			console.error(`❌ blogs.json not found at: ${blogsJsonPath}`);
 			process.exit(1);
 		}
 
-		// ✅ Read and parse writeups data
-		const writeupsData = readFileSync(writeupsJsonPath, 'utf8');
-		const writeups: Writeup[] = JSON.parse(writeupsData);
+		const blogsData = readFileSync(blogsJsonPath, 'utf8');
+		const blogs: Blog[] = JSON.parse(blogsData);
 
-		console.log(`📊 Found ${writeups.length} writeups to process`);
+		console.log(`📊 Found ${blogs.length} blogs to process`);
 
-		// ✅ Read the template file
 		if (!existsSync(templatePath)) {
 			console.error(`❌ Template file not found at: ${templatePath}`);
 			process.exit(1);
 		}
-		let template = readFileSync(templatePath, 'utf8');
-		const writeupsHtml = writeups
+		const template = readFileSync(templatePath, 'utf8');
+		const blogsHtml = blogs
 			.map(
-				(writeup) => `
-  <div class="writeup-card" data-id="${writeup.id}">
-    <h2 class="writeup-title cyber-text">${writeup.title}</h2>
-    <p class="writeup-description">${writeup.description}</p>
+				(blog) => `
+  <div class="writeup-card" data-id="${blog.id}">
+    <h2 class="writeup-title cyber-text">${blog.title}</h2>
+    <p class="writeup-description">${blog.description}</p>
     ${
-			writeup.tags && writeup.tags.length
+			blog.tags && blog.tags.length
 				? `<div>
-            ${writeup.tags.map((tag) => `<button type="button">${tag}</button>`).join('')}
+            ${blog.tags.map((tag) => `<button type="button">${tag}</button>`).join('')}
           </div>`
 				: ''
 		}
-    <a href="writeups/${writeup.id}.html" class="writeup-link cyber-link">
-      READ_WRITEUP
+    <a href="blogs/${blog.id}.html" class="writeup-link cyber-link">
+      READ_BLOG
     </a>
   </div>`,
 			)
 			.join('');
 
-		// ✅ Generate pagination HTML (if needed)
 		const itemsPerPage = 6;
-		const pageCount = Math.ceil(writeups.length / itemsPerPage);
+		const pageCount = Math.ceil(blogs.length / itemsPerPage);
 		const paginationHtml =
 			pageCount > 1
 				? `<div class="pagination-controls">
@@ -74,7 +69,7 @@ export async function generateWriteupsIndex() {
 			tags = JSON.parse(tagsData);
 		} else {
 			console.warn(
-				`⚠️ tags.json not found at: ${tagsJsonPath} (continuing without tags)`,
+				`⚠️ blog-tags.json not found at: ${tagsJsonPath} (continuing without tags)`,
 			);
 		}
 		const tagsHtml = (tags ?? [])
@@ -88,26 +83,24 @@ export async function generateWriteupsIndex() {
 			)
 			.join('');
 
-		// ✅ Main content block (clean and minimal — no duplicate filters/search)
 		const mainContent = `
       <div class="writeups-container">
-        <h1 class="cyber-text glitch-effect text-center" data-text="PENETRATION_TESTING_WRITEUPS">
-          PENETRATION_TESTING_WRITEUPS
+        <h1 class="cyber-text glitch-effect text-center" data-text="BLOG_POSTS">
+          BLOG_POSTS
         </h1>
 
         <div class="text-center mt-4">
-          <a href="blogs.html" class="writeup-link cyber-link">VIEW_BLOGS</a>
+          <a href="writeups.html" class="writeup-link cyber-link">VIEW_WRITEUPS</a>
         </div>
 
         <div id="writeupsList" class="writeups-grid">
-          ${writeupsHtml}
+          ${blogsHtml}
         </div>
 
         <div class="pagination mt-8">${paginationHtml}</div>
       </div>
     `;
 
-		// ✅ Update template paths for correct relative linking
 		const templateWithStyles = template.replace(
 			'</head>',
 			`  <link rel="stylesheet" href="assets/css/writeupIndex.css" /></head>`,
@@ -118,7 +111,7 @@ export async function generateWriteupsIndex() {
 			.replace('${tags}', tagsHtml)
 			.replace(
 				'</body>',
-				`  <script type="module" src="assets/js/writeups.js" defer></script></body>`,
+				`  <script type="module" src="assets/js/blogs.js" defer></script></body>`,
 			)
 			.replace(
 				`
@@ -135,11 +128,10 @@ export async function generateWriteupsIndex() {
 				`<script type="module" src="assets/js/menu.js" defer></script>`,
 			);
 
-		// ✅ Write final HTML file
 		writeFileSync(outputPath, finalHtml);
-		console.log(`✅ Writeups index generated successfully at: ${outputPath}`);
+		console.log(`✅ Blogs index generated successfully at: ${outputPath}`);
 	} catch (error) {
-		console.error('❌ Error generating writeups index:', error);
+		console.error('❌ Error generating blogs index:', error);
 		process.exit(1);
 	}
 }

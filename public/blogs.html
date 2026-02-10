@@ -114,28 +114,8 @@
   <div id='tags-container'>
     <button type="button"
         class="tag small"
-        data-tag="sqli">
-        sqli
-      </button><button type="button"
-        class="tag small"
-        data-tag="mysql">
-        mysql
-      </button><button type="button"
-        class="tag small"
-        data-tag="php">
-        php
-      </button><button type="button"
-        class="tag small"
         data-tag="web">
         web
-      </button><button type="button"
-        class="tag small"
-        data-tag="xss">
-        xss
-      </button><button type="button"
-        class="tag small"
-        data-tag="js">
-        js
       </button>
   </div>
 </section>
@@ -143,52 +123,24 @@
 <!-- Writeup content -->
 <article class="markdown-body">
       <div class="writeups-container">
-        <h1 class="cyber-text glitch-effect text-center" data-text="PENETRATION_TESTING_WRITEUPS">
-          PENETRATION_TESTING_WRITEUPS
+        <h1 class="cyber-text glitch-effect text-center" data-text="BLOG_POSTS">
+          BLOG_POSTS
         </h1>
 
         <div class="text-center mt-4">
-          <a href="blogs.html" class="writeup-link cyber-link">VIEW_BLOGS</a>
+          <a href="writeups.html" class="writeup-link cyber-link">VIEW_WRITEUPS</a>
         </div>
 
         <div id="writeupsList" class="writeups-grid">
           
-  <div class="writeup-card" data-id="xss_writeup_2">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: DOM-Based XSS Vulnerability</h2>
-    <p class="writeup-description">A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.</p>
+  <div class="writeup-card" data-id="first_blog">
+    <h2 class="writeup-title cyber-text">Building This Portfolio Site</h2>
+    <p class="writeup-description">This blog post explains how the build pipeline turns markdown into static HTML pages. It mirrors the writeup system and is used as a sample blog entry.</p>
     <div>
-            <button type="button">sqli</button><button type="button">mysql</button>
+            <button type="button">web</button>
           </div>
-    <a href="writeups/xss_writeup_2.html" class="writeup-link cyber-link">
-      READ_WRITEUP
-    </a>
-  </div>
-  <div class="writeup-card" data-id="input">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability</h2>
-    <p class="writeup-description">During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.</p>
-    
-    <a href="writeups/input.html" class="writeup-link cyber-link">
-      READ_WRITEUP
-    </a>
-  </div>
-  <div class="writeup-card" data-id="xss_writeup_10">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Admin Panel</h2>
-    <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.</p>
-    <div>
-            <button type="button">php</button><button type="button">web</button>
-          </div>
-    <a href="writeups/xss_writeup_10.html" class="writeup-link cyber-link">
-      READ_WRITEUP
-    </a>
-  </div>
-  <div class="writeup-card" data-id="xss_writeup_1">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability</h2>
-    <p class="writeup-description">During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.</p>
-    <div>
-            <button type="button">xss</button><button type="button">js</button>
-          </div>
-    <a href="writeups/xss_writeup_1.html" class="writeup-link cyber-link">
-      READ_WRITEUP
+    <a href="blogs/first_blog.html" class="writeup-link cyber-link">
+      READ_BLOG
     </a>
   </div>
         </div>
@@ -239,5 +191,5 @@
 			</footer>
 		</main>
 		<script type="module" src="assets/js/menu.js" defer></script>
-	  <script type="module" src="assets/js/writeups.js" defer></script></body>
+	  <script type="module" src="assets/js/blogs.js" defer></script></body>
 </html>
