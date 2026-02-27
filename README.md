@@ -1,8 +1,4 @@
-# 💻 Rakeli — Cyberpunk Web Terminal Portfolio
-
-**Rakeli** is a personal website project built as a **cyberpunk-themed terminal
-interface** for a cybersecurity professional. It mimics a Unix shell, allowing
-visitors to explore content using commands like `help`, `cd`, `ls`, and more.
+# This is my Portfolio Site
 
 > ⚠️ This project is currently in active development.
 
