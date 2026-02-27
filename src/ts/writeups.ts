@@ -8,19 +8,19 @@ interface Writeup {
 // AUTO-GENERATED-WRITEUPS-START
 const writeups: Writeup[] = [
   {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
-    "tags": [
-      "sqli",
-      "mysql"
-    ]
-  },
-  {
     "id": "input",
     "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
     "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
     "tags": []
+  },
+  {
+    "id": "xss_writeup_1",
+    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
+    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
+    "tags": [
+      "xss",
+      "js"
+    ]
   },
   {
     "id": "xss_writeup_10",
@@ -32,12 +32,12 @@ const writeups: Writeup[] = [
     ]
   },
   {
-    "id": "xss_writeup_1",
-    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
+    "id": "xss_writeup_2",
+    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
+    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
     "tags": [
-      "xss",
-      "js"
+      "sqli",
+      "mysql"
     ]
   }
 ];
