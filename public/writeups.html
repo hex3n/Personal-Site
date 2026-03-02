@@ -31,7 +31,7 @@
 						<span
 							class="text-neongreen font-bold text-xl glitch-effect"
 							data-text="HEXEN"
-							>HEXEN</span
+							>HEXENNNNNN</span
 						>
 						<span class="text-neonpink text-sm ml-2"
 							>// SECURITY_SPECIALIST</span
@@ -40,7 +40,7 @@
 
 					<!-- Desktop Menu -->
 					<div class="hidden md:flex space-x-6">
-						<a href="index.html" class="nav-link">HOME</a>
+						<a href="../index.html" class="nav-link">HOMEEEE</a>
 						<a href="about.html" class="nav-link">ABOUT</a>
 						<a href="writeups.html" class="nav-link">WRITEUPS</a>
 						<a href="blogs.html" class="nav-link">BLOGS</a>
@@ -114,6 +114,14 @@
   <div id='tags-container'>
     <button type="button"
         class="tag small"
+        data-tag="sqli">
+        sqli
+      </button><button type="button"
+        class="tag small"
+        data-tag="mysql">
+        mysql
+      </button><button type="button"
+        class="tag small"
         data-tag="xss">
         xss
       </button><button type="button"
@@ -128,14 +136,6 @@
         class="tag small"
         data-tag="web">
         web
-      </button><button type="button"
-        class="tag small"
-        data-tag="sqli">
-        sqli
-      </button><button type="button"
-        class="tag small"
-        data-tag="mysql">
-        mysql
       </button>
   </div>
 </section>
@@ -153,11 +153,13 @@
 
         <div id="writeupsList" class="writeups-grid">
           
-  <div class="writeup-card" data-id="input">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability</h2>
-    <p class="writeup-description">During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.</p>
-    
-    <a href="writeups/input.html" class="writeup-link cyber-link">
+  <div class="writeup-card" data-id="xss_writeup_2">
+    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: DOM-Based XSS Vulnerability</h2>
+    <p class="writeup-description">A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.</p>
+    <div>
+            <button type="button">sqli</button><button type="button">mysql</button>
+          </div>
+    <a href="writeups/xss_writeup_2.html" class="writeup-link cyber-link">
       READ_WRITEUP
     </a>
   </div>
@@ -171,6 +173,14 @@
       READ_WRITEUP
     </a>
   </div>
+  <div class="writeup-card" data-id="input">
+    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability</h2>
+    <p class="writeup-description">During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.</p>
+    
+    <a href="writeups/input.html" class="writeup-link cyber-link">
+      READ_WRITEUP
+    </a>
+  </div>
   <div class="writeup-card" data-id="xss_writeup_10">
     <h2 class="writeup-title cyber-text">Penetration Testing Writeup: XSS in Admin Panel</h2>
     <p class="writeup-description">A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.</p>
@@ -178,16 +188,6 @@
             <button type="button">php</button><button type="button">web</button>
           </div>
     <a href="writeups/xss_writeup_10.html" class="writeup-link cyber-link">
-      READ_WRITEUP
-    </a>
-  </div>
-  <div class="writeup-card" data-id="xss_writeup_2">
-    <h2 class="writeup-title cyber-text">Penetration Testing Writeup: DOM-Based XSS Vulnerability</h2>
-    <p class="writeup-description">A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.</p>
-    <div>
-            <button type="button">sqli</button><button type="button">mysql</button>
-          </div>
-    <a href="writeups/xss_writeup_2.html" class="writeup-link cyber-link">
       READ_WRITEUP
     </a>
   </div>

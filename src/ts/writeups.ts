@@ -8,10 +8,13 @@ interface Writeup {
 // AUTO-GENERATED-WRITEUPS-START
 const writeups: Writeup[] = [
   {
-    "id": "input",
-    "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
-    "tags": []
+    "id": "xss_writeup_2",
+    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
+    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "tags": [
+      "sqli",
+      "mysql"
+    ]
   },
   {
     "id": "xss_writeup_1",
@@ -23,21 +26,18 @@ const writeups: Writeup[] = [
     ]
   },
   {
+    "id": "input",
+    "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
+    "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
+    "tags": []
+  },
+  {
     "id": "xss_writeup_10",
     "title": "Penetration Testing Writeup: XSS in Admin Panel",
     "description": "A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.",
     "tags": [
       "php",
       "web"
-    ]
-  },
-  {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
-    "tags": [
-      "sqli",
-      "mysql"
     ]
   }
 ];
