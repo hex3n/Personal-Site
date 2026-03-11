@@ -8,21 +8,11 @@ interface Writeup {
 // AUTO-GENERATED-WRITEUPS-START
 const writeups: Writeup[] = [
   {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "id": "picklerick_writeup",
+    "title": "TryHackMe | Pickle Rick CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the Pickle Rick room on TryHackMe. The challenge focuses on basic web reconnaissance, enumeration, command execution, and privilege escalation.",
     "tags": [
-      "sqli",
-      "mysql"
-    ]
-  },
-  {
-    "id": "xss_writeup_1",
-    "title": "Penetration Testing Writeup: Stored Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a penetration test on [Target Application], a critical Stored Cross-Site Scripting (XSS) vulnerability was discovered in the application's comment system. This flaw allows attackers to inject malicious scripts that execute in the browsers of all users viewing the affected page, potentially leading to account takeover, data theft, or website defacement.",
-    "tags": [
-      "xss",
-      "js"
+      "thm"
     ]
   },
   {
@@ -38,6 +28,15 @@ const writeups: Writeup[] = [
     "tags": [
       "php",
       "web"
+    ]
+  },
+  {
+    "id": "xss_writeup_2",
+    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
+    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "tags": [
+      "sqli",
+      "mysql"
     ]
   }
 ];
