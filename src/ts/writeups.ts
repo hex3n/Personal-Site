@@ -31,12 +31,11 @@ const writeups: Writeup[] = [
     ]
   },
   {
-    "id": "xss_writeup_2",
-    "title": "Penetration Testing Writeup: DOM-Based XSS Vulnerability",
-    "description": "A DOM-Based Cross-Site Scripting (XSS) vulnerability was identified in [Target Application]’s client-side JavaScript code during a recent penetration test. This vulnerability allows attackers to manipulate the DOM to execute malicious scripts, potentially compromising user sessions or stealing sensitive data.",
+    "id": "disgruntled_writeup",
+    "title": "TryHackMe | Disgruntled CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the Disgruntled room on TryHackMe. The challenge focuses on Linux forensics, analyzing logs and system artifacts to determine what actions a malicious insider performed on the machine.",
     "tags": [
-      "sqli",
-      "mysql"
+      "thm"
     ]
   }
 ];
