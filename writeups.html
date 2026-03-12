@@ -133,6 +133,16 @@
 
         <div id="writeupsList" class="writeups-grid">
           
+  <div class="writeup-card" data-id="whiterose_writeup">
+    <h2 class="writeup-title cyber-text">TryHackMe | Whiterose CTF Writeup</h2>
+    <p class="writeup-description">This writeup documents the steps taken to solve the Whiterose room on TryHackMe. The challenge involves web enumeration, exploiting a Server-Side Template Injection (SSTI) vulnerability, and performing privilege escalation to obtain root access.</p>
+    <div>
+            <button type="button">thm</button>
+          </div>
+    <a href="writeups/whiterose_writeup.html" class="writeup-link cyber-link">
+      READ_WRITEUP
+    </a>
+  </div>
   <div class="writeup-card" data-id="picklerick_writeup">
     <h2 class="writeup-title cyber-text">TryHackMe | Pickle Rick CTF Writeup</h2>
     <p class="writeup-description">This writeup documents the steps taken to solve the Pickle Rick room on TryHackMe. The challenge focuses on basic web reconnaissance, enumeration, command execution, and privilege escalation.</p>
@@ -153,6 +163,16 @@
       READ_WRITEUP
     </a>
   </div>
+  <div class="writeup-card" data-id="blue_writeup">
+    <h2 class="writeup-title cyber-text">TryHackMe | Blue CTF Writeup</h2>
+    <p class="writeup-description">This writeup documents the steps taken to solve the Blue room on TryHackMe. The challenge focuses on exploiting the MS17-010 (EternalBlue) vulnerability using Metasploit to gain system access on a Windows machine.</p>
+    <div>
+            <button type="button">thm</button>
+          </div>
+    <a href="writeups/blue_writeup.html" class="writeup-link cyber-link">
+      READ_WRITEUP
+    </a>
+  </div>
   <div class="writeup-card" data-id="disgruntled_writeup">
     <h2 class="writeup-title cyber-text">TryHackMe | Disgruntled CTF Writeup</h2>
     <p class="writeup-description">This writeup documents the steps taken to solve the Disgruntled room on TryHackMe. The challenge focuses on Linux forensics, analyzing logs and system artifacts to determine what actions a malicious insider performed on the machine.</p>
@@ -160,6 +180,16 @@
             <button type="button">thm</button>
           </div>
     <a href="writeups/disgruntled_writeup.html" class="writeup-link cyber-link">
+      READ_WRITEUP
+    </a>
+  </div>
+  <div class="writeup-card" data-id="bruteit_writeup">
+    <h2 class="writeup-title cyber-text">TryHackMe | Brute It CTF Writeup</h2>
+    <p class="writeup-description">This writeup documents the steps taken to solve the Brute It room on TryHackMe. The challenge focuses on web enumeration, brute forcing credentials, cracking hashes, and performing privilege escalation on a Linux system.</p>
+    <div>
+            <button type="button">thm</button>
+          </div>
+    <a href="writeups/bruteit_writeup.html" class="writeup-link cyber-link">
       READ_WRITEUP
     </a>
   </div>
@@ -175,7 +205,11 @@
   </div>
         </div>
 
-        <div class="pagination mt-8"></div>
+        <div class="pagination mt-8"><div class="pagination-controls">
+            <button type="button" id="prevPage" class="pagination-btn cyber-button">PREV</button>
+            <span class="page-info cyber-text">PAGE <span id="currentPage">1</span> / 2</span>
+            <button type="button" id="nextPage" class="pagination-btn cyber-button">NEXT</button>
+          </div></div>
       </div>
     </article>
 

