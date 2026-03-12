@@ -16,24 +16,25 @@ const writeups: Writeup[] = [
     ]
   },
   {
-    "id": "input",
-    "title": "Penetration Testing Writeup: Cross-Site Scripting (XSS) Vulnerability",
-    "description": "During a recent penetration test conducted on [Target Application], a critical Cross-Site Scripting (XSS) vulnerability was identified in the application's user input handling mechanism. This vulnerability allows an attacker to inject malicious scripts into web pages viewed by other users, potentially leading to session hijacking, data theft, or defacement of the website.",
-    "tags": []
-  },
-  {
-    "id": "xss_writeup_10",
-    "title": "Penetration Testing Writeup: XSS in Admin Panel",
-    "description": "A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target Application]’s admin panel during a penetration test. This allows attackers to inject scripts into admin inputs, affecting admin users.",
+    "id": "rootme_writeup",
+    "title": "TryHackMe | RootMe CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the RootMe room on TryHackMe. The challenge focuses on web enumeration, exploiting a file upload vulnerability to gain a reverse shell, and performing privilege escalation on a Linux system.",
     "tags": [
-      "php",
-      "web"
+      "thm"
     ]
   },
   {
     "id": "disgruntled_writeup",
     "title": "TryHackMe | Disgruntled CTF Writeup",
     "description": "This writeup documents the steps taken to solve the Disgruntled room on TryHackMe. The challenge focuses on Linux forensics, analyzing logs and system artifacts to determine what actions a malicious insider performed on the machine.",
+    "tags": [
+      "thm"
+    ]
+  },
+  {
+    "id": "fowsniff_writeup",
+    "title": "TryHackMe | FowSniff CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the FowSniff machine on TryHackMe. The challenge involves reconnaissance, OSINT investigation, credential cracking, and privilege escalation to obtain root access.",
     "tags": [
       "thm"
     ]
