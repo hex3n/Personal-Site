@@ -8,6 +8,30 @@ interface Writeup {
 // AUTO-GENERATED-WRITEUPS-START
 const writeups: Writeup[] = [
   {
+    "id": "whiterose_writeup",
+    "title": "TryHackMe | Whiterose CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the Whiterose room on TryHackMe. The challenge involves web enumeration, exploiting a Server-Side Template Injection (SSTI) vulnerability, and performing privilege escalation to obtain root access.",
+    "tags": [
+      "thm"
+    ]
+  },
+  {
+    "id": "bruteit_writeup",
+    "title": "TryHackMe | Brute It CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the Brute It room on TryHackMe. The challenge focuses on web enumeration, brute forcing credentials, cracking hashes, and performing privilege escalation on a Linux system.",
+    "tags": [
+      "thm"
+    ]
+  },
+  {
+    "id": "blue_writeup",
+    "title": "TryHackMe | Blue CTF Writeup",
+    "description": "This writeup documents the steps taken to solve the Blue room on TryHackMe. The challenge focuses on exploiting the MS17-010 (EternalBlue) vulnerability using Metasploit to gain system access on a Windows machine.",
+    "tags": [
+      "thm"
+    ]
+  },
+  {
     "id": "picklerick_writeup",
     "title": "TryHackMe | Pickle Rick CTF Writeup",
     "description": "This writeup documents the steps taken to solve the Pickle Rick room on TryHackMe. The challenge focuses on basic web reconnaissance, enumeration, command execution, and privilege escalation.",
