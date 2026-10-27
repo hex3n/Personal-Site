@@ -1,3 +1,15 @@
+// Frame-busting clickjacking guard. GitHub Pages can't send an
+// X-Frame-Options header, and `frame-ancestors` inside a <meta> CSP is ignored
+// by the spec, so break out of any cross-origin frame here (menu.js loads on
+// every page). If reading top.location throws (cross-origin), hide the page.
+if (window.self !== window.top) {
+	try {
+		window.top!.location.replace(window.self.location.href);
+	} catch {
+		document.documentElement.style.display = 'none';
+	}
+}
+
 document.addEventListener('DOMContentLoaded', function () {
 	const mobileMenuButton = document.getElementById('mobile-menu-button');
 	const mobileMenu = document.getElementById('mobile-menu');

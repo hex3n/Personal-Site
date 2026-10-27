@@ -103,7 +103,9 @@ terminalInput.addEventListener('keydown', (event: KeyboardEvent) => {
 
 			const hintName = hints[0];
 
-			autocomplete.innerHTML = hintName;
+			// textContent, not innerHTML: hintName can echo a previously typed
+			// command line, so rendering it as HTML is a DOM-XSS sink.
+			autocomplete.textContent = hintName;
 
 			break;
 		}

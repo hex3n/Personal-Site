@@ -976,17 +976,17 @@
 }
 
 .animate-count {
-	animation: count-up 2s ease-out 2.5s both;
+	/* Subtle grow-in only. Never start at opacity:0 — the stat numbers must be
+	   legible the instant the page loads (and in link/thumbnail previews). */
+	animation: count-up 0.6s ease-out both;
 }
 
 @keyframes count-up {
 	from {
-		opacity: 0;
-		transform: scale(0.5);
+		transform: scale(0.85);
 	}
 
 	to {
-		opacity: 1;
 		transform: scale(1);
 	}
 }
@@ -1482,8 +1482,7 @@
 
 /* Terminal Window */
 
-.terminal-window.open,
-#winamp.open {
+.terminal-window.open {
 	animation: terminal-open 0.8s ease-out forwards;
 }
 
@@ -1506,8 +1505,7 @@
 	}
 }
 
-.terminal-window.close,
-#winamp.close {
+.terminal-window.close {
 	animation: terminal-close 0.6s ease-in forwards;
 }
 
@@ -5776,3 +5774,22 @@
 
 
 
+
+/* Respect visitors who prefer reduced motion: neutralize the ambient and
+   entrance animations (matrix rain, grid, scanlines, pulses, gradient, count-up). */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+
+	.matrix-rain,
+	.grid-bg,
+	.scanlines {
+		animation: none !important;
+	}
+}
